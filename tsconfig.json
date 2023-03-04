@@ -4,6 +4,7 @@
 		"paths": {
 			"@typings/*": ["src/typings/*"],
 			"@styles/*": ["src/styles/*"],
+			"@api/*": ["src/api/*"],
 			"@seo-default": ["src/next-seo.config"]
 		},
 		"target": "es5",

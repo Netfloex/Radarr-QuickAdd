@@ -1,6 +1,8 @@
-import "@styles/global.scss";
+import "@styles/global.scss"
 
-import { FCC } from "@typings/FCC";
+import { SWRGlobalConfig } from "src/components/SWRGlobalConfig"
+
+import { FCC } from "@typings/FCC"
 
 const RootLayout: FCC = ({ children }) => (
 	<html lang="en">
@@ -8,8 +10,10 @@ const RootLayout: FCC = ({ children }) => (
 			<meta charSet="utf-8" />
 			<meta name="viewport" content="width=device-width" />
 		</head>
-		<body>{children}</body>
+		<body>
+			<SWRGlobalConfig>{children}</SWRGlobalConfig>
+		</body>
 	</html>
-);
+)
 
-export default RootLayout;
+export default RootLayout
