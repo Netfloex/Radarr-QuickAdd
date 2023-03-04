@@ -16,10 +16,15 @@
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"dependencies": {},
+	"dependencies": {
+		"@emotion/react": "^11.10.6",
+		"@emotion/styled": "^11.10.6",
+		"@mui/joy": "^5.0.0-alpha.69"
+	},
 	"devDependencies": {
 		"@ianvs/prettier-plugin-sort-imports": "^3.7.1",
 		"@trivago/prettier-plugin-sort-imports": "^4.1.1",
+		"@types/luxon": "^3.2.0",
 		"@types/node": "^18.14.6",
 		"@types/react": "^18.0.28",
 		"@typescript-eslint/eslint-plugin": "^5.54.0",
@@ -34,6 +39,7 @@
 		"filesize": "^10.0.6",
 		"husky": "^8.0.3",
 		"ky": "^0.33.2",
+		"luxon": "^3.3.0",
 		"next": "^13.2.3",
 		"next-pwa": "^5.6.0",
 		"prettier": "^2.8.4",

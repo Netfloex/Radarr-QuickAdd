@@ -5,6 +5,7 @@
 			"@typings/*": ["src/typings/*"],
 			"@styles/*": ["src/styles/*"],
 			"@api/*": ["src/api/*"],
+			"@components/*": ["src/components/*"],
 			"@seo-default": ["src/next-seo.config"]
 		},
 		"target": "es5",

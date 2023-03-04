@@ -1,8 +1,16 @@
-import styles from "./MovieItem.module.scss"
-
+import { Duration } from "luxon"
 import Image from "next/image"
 import { FC, useCallback } from "react"
 import { downloadMovie } from "src/utils/downloadMovie"
+
+import {
+	AspectRatio,
+	Button,
+	Card,
+	CardContent,
+	CardOverflow,
+	Typography,
+} from "@mui/joy"
 
 import { MovieResult } from "@typings/Movie"
 
@@ -12,23 +20,33 @@ export const MovieItem: FC<{ movie: MovieResult }> = ({ movie }) => {
 	}, [movie])
 
 	return (
-		<div className={styles.movieItem}>
-			<div>
-				<Image
-					src={movie.remotePoster}
-					width={200}
-					height={300}
-					unoptimized
-					alt={movie.title}
-				/>
-			</div>
-			<div>
-				<h1>
+		<Card orientation="horizontal">
+			<CardOverflow>
+				<AspectRatio ratio={2 / 3} sx={{ width: "15rem" }}>
+					{movie.remotePoster && (
+						<Image
+							src={movie.remotePoster}
+							unoptimized
+							fill={true}
+							alt={movie.title}
+						/>
+					)}
+				</AspectRatio>
+			</CardOverflow>
+			<CardContent sx={{ px: 2 }}>
+				<Typography level="h2">
 					{movie.title} ({movie.year})
-				</h1>
-				{movie.overview}
-				<button onClick={download}>Download</button>
-			</div>
-		</div>
+				</Typography>
+				<Typography level="body4">
+					{Duration.fromObject({ minutes: movie.runtime })
+						.shiftTo("hours", "minutes")
+						.toHuman()}
+				</Typography>
+				<Typography>{movie.overview}</Typography>
+				<Button disabled={movie.hasFile} onClick={download}>
+					Download
+				</Button>
+			</CardContent>
+		</Card>
 	)
 }

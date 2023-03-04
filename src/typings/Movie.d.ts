@@ -5,4 +5,6 @@ export interface MovieResult {
 	tmdbId: number
 	id?: number
 	remotePoster: string
+	runtime: number
+	hasFile?: boolean
 }
