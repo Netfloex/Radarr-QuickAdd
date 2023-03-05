@@ -1,14 +1,13 @@
 import { addMovie } from "@api/addMovie"
 import { downloadRelease } from "@api/downloadRelease"
 import { getReleases } from "@api/getReleases"
+import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
 import chalk from "chalk"
 import chk from "chalk-template"
 import { filesize } from "filesize"
 
-import { DownloadMovieOptions } from "@typings/DownloadMovieOptions"
-
 export const downloadMovie = async (
-	movie: DownloadMovieOptions,
+	movie: DownloadMovieBody,
 ): Promise<void> => {
 	if (!movie.id) {
 		console.log(chalk.yellow("Adding movie..."))

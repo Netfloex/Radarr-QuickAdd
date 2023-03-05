@@ -6,6 +6,8 @@
 			"@styles/*": ["src/styles/*"],
 			"@api/*": ["src/api/*"],
 			"@components/*": ["src/components/*"],
+			"@utils/*": ["src/utils/*"],
+			"@schemas/*": ["src/schemas/*"],
 			"@seo-default": ["src/next-seo.config"]
 		},
 		"target": "es5",

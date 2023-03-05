@@ -1,13 +1,21 @@
+import { MovieSearchResult } from "@schemas/MovieSearchResult"
+
 import { http } from "./http"
 
-import { MovieResult } from "@typings/Movie"
+export const search = async (term: string): Promise<MovieSearchResult[]> => {
+	const data = await http
+		.get("movie/lookup", {
+			searchParams: {
+				term,
+			},
+		})
+		.json()
 
-export const search = async (term: string): Promise<MovieResult[]> => {
-	const data = http.get("movie/lookup", {
-		searchParams: {
-			term,
-		},
-	})
+	const result = MovieSearchResult.array().safeParse(data)
 
-	return data.json()
+	if (result.success) {
+		return result.data
+	}
+
+	throw result.error
 }
