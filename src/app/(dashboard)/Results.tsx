@@ -1,9 +1,20 @@
-import { search } from "@api/search"
+import ky from "ky"
 import type { FC } from "react"
 import { MovieItem } from "src/app/(dashboard)/MovieItem"
 import useSWR from "swr"
 
 import { List, ListItem } from "@mui/joy"
+
+import { MovieResult } from "@typings/Movie"
+
+const search = (query: string): Promise<MovieResult[]> => {
+	return ky("/api/search", {
+		searchParams: {
+			term: query,
+		},
+		cache: "force-cache",
+	}).json()
+}
 
 export const Results: FC<{ query: string }> = ({ query }) => {
 	const { data, error, isLoading } = useSWR(query, search)

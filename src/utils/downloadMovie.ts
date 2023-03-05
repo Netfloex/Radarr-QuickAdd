@@ -5,9 +5,11 @@ import chalk from "chalk"
 import chk from "chalk-template"
 import { filesize } from "filesize"
 
-import { MovieResult } from "@typings/Movie"
+import { DownloadMovieOptions } from "@typings/DownloadMovieOptions"
 
-export const downloadMovie = async (movie: MovieResult): Promise<void> => {
+export const downloadMovie = async (
+	movie: DownloadMovieOptions,
+): Promise<void> => {
 	if (!movie.id) {
 		console.log(chalk.yellow("Adding movie..."))
 

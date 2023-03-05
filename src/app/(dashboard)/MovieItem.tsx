@@ -1,7 +1,7 @@
+import ky from "ky"
 import { Duration } from "luxon"
 import Image from "next/image"
 import { FC, useCallback } from "react"
-import { downloadMovie } from "src/utils/downloadMovie"
 
 import {
 	AspectRatio,
@@ -12,11 +12,19 @@ import {
 	Typography,
 } from "@mui/joy"
 
+import { DownloadMovieOptions } from "@typings/DownloadMovieOptions"
 import { MovieResult } from "@typings/Movie"
 
 export const MovieItem: FC<{ movie: MovieResult }> = ({ movie }) => {
 	const download = useCallback(() => {
-		downloadMovie(movie)
+		const options: DownloadMovieOptions = {
+			id: movie.id,
+			title: movie.title,
+			tmdbId: movie.tmdbId,
+		}
+		ky.post("/api/downloadMovie", {
+			json: options,
+		})
 	}, [movie])
 
 	return (

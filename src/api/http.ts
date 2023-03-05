@@ -1,10 +1,10 @@
-import ky from "ky"
+import got, { RequestError } from "got"
 
-export const http = ky.extend({
-	prefixUrl: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v3`,
+export const http = got.extend({
+	prefixUrl: `${process.env.SERVER_URL}/api/v3`,
 
 	headers: {
-		"X-Api-Key": process.env.NEXT_PUBLIC_API_KEY,
+		"X-Api-Key": process.env.API_KEY,
 	},
 	cache: "force-cache",
 })
