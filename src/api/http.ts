@@ -1,9 +1,13 @@
 import got, { RequestError } from "got"
 
+import { getOptions } from "@utils/getOptions"
+
+const options = getOptions()
+
 export const http = got.extend({
-	prefixUrl: `${process.env.SERVER_URL}/api/v3`,
+	prefixUrl: `${options.serverUrl}/api/v3`,
 	headers: {
-		"X-Api-Key": process.env.API_KEY,
+		"X-Api-Key": options.apiKey,
 	},
 	hooks: {
 		beforeError: [

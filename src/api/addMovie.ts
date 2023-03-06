@@ -1,11 +1,14 @@
 import { http } from "@api/http"
 
+import { getOptions } from "@utils/getOptions"
+
 interface AddMovieOptions {
 	tmdbId: number
 	title: string
 }
 
 export const addMovie = async (movie: AddMovieOptions): Promise<number> => {
+	const options = getOptions()
 	const data: { id: number } = await http
 		.post("movie", {
 			json: {
@@ -13,8 +16,8 @@ export const addMovie = async (movie: AddMovieOptions): Promise<number> => {
 					monitor: "none",
 					searchForMovie: false,
 				},
-				qualityProfileId: process.env.QUALITY_PROFILE_ID,
-				rootFolderPath: process.env.ROOT_FOLDER,
+				qualityProfileId: options.qualityProfile,
+				rootFolderPath: options.rootFolder,
 				monitored: false,
 				...movie,
 			},
