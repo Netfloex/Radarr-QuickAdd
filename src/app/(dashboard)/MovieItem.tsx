@@ -1,7 +1,9 @@
+import { MovieSearchResult } from "@schemas/MovieSearchResult"
 import ky from "ky"
 import { Duration } from "luxon"
 import Image from "next/image"
 import { FC, useCallback } from "react"
+import { MovieStatus } from "src/app/(dashboard)/MovieStatus"
 
 import {
 	AspectRatio,
@@ -9,13 +11,13 @@ import {
 	Card,
 	CardContent,
 	CardOverflow,
+	LinearProgress,
 	Typography,
 } from "@mui/joy"
 
 import { DownloadMovieOptions } from "@typings/DownloadMovieOptions"
-import { MovieResult } from "@typings/Movie"
 
-export const MovieItem: FC<{ movie: MovieResult }> = ({ movie }) => {
+export const MovieItem: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 	const download = useCallback(() => {
 		const options: DownloadMovieOptions = {
 			id: movie.id,
@@ -39,6 +41,7 @@ export const MovieItem: FC<{ movie: MovieResult }> = ({ movie }) => {
 							alt={movie.title}
 						/>
 					)}
+					<MovieStatus movie={movie} />
 				</AspectRatio>
 			</CardOverflow>
 			<CardContent sx={{ px: 2 }}>
@@ -51,9 +54,28 @@ export const MovieItem: FC<{ movie: MovieResult }> = ({ movie }) => {
 						.toHuman()}
 				</Typography>
 				<Typography>{movie.overview}</Typography>
-				<Button disabled={movie.hasFile} onClick={download}>
-					Download
-				</Button>
+				{movie.queueStatus == undefined ? (
+					<Button disabled={movie.hasFile} onClick={download}>
+						Download
+					</Button>
+				) : (
+					<>
+						<LinearProgress
+							determinate
+							color={
+								movie.queueStatus.status !== "downloading"
+									? "danger"
+									: "info"
+							}
+							variant="plain"
+							value={
+								(movie.queueStatus.sizeleft /
+									movie.queueStatus.size) *
+								100
+							}
+						/>
+					</>
+				)}
 			</CardContent>
 		</Card>
 	)
