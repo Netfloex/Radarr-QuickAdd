@@ -3,7 +3,13 @@ import { HTTPError } from "got"
 import { NextApiHandler } from "next"
 import { downloadMovie } from "src/utils/downloadMovie"
 
+import { hasOptions } from "@utils/getOptions"
+
 const downloadMovieHandler: NextApiHandler = async (req, res) => {
+	if (!hasOptions()) {
+		return res.status(500).json({ error: "Missing environment variables" })
+	}
+
 	if (req.method !== "POST") {
 		return res.status(405).end("Method Not Allowed")
 	}

@@ -2,7 +2,7 @@ import got, { RequestError } from "got"
 
 import { getOptions } from "@utils/getOptions"
 
-const options = getOptions()
+const options = getOptions(true)
 
 export const http = got.extend({
 	prefixUrl: `${options.serverUrl}/api/v3`,

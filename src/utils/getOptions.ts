@@ -3,7 +3,8 @@ import {
 	EnvironmentOptionsInput,
 } from "@schemas/EnvironmentOptions"
 
-export const getOptions = (): EnvironmentOptions => {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+const parsedOptions = () => {
 	const options: Partial<EnvironmentOptionsInput> = {
 		apiKey: process.env.API_KEY,
 		qualityProfile: process.env.QUALITY_PROFILE_ID,
@@ -13,10 +14,26 @@ export const getOptions = (): EnvironmentOptions => {
 
 	const parsed = EnvironmentOptions.safeParse(options)
 
+	return parsed
+}
+
+export const getOptions = (
+	safe?: boolean,
+): EnvironmentOptions | Record<string, never> => {
+	const parsed = parsedOptions()
+
 	if (!parsed.success) {
-		console.log(parsed.error)
-		throw new Error("Environment Variables are missing")
+		if (safe) {
+			return {}
+		}
+		throw new Error("Environment Variables are missing!")
 	}
 
 	return parsed.data
+}
+
+export const hasOptions = (): boolean => {
+	const parsed = parsedOptions()
+
+	return parsed.success
 }

@@ -2,8 +2,14 @@ import { queueDetails } from "@api/queueDetails"
 import { search } from "@api/search"
 import { NextApiHandler } from "next"
 
+import { hasOptions } from "@utils/getOptions"
+
 const searchHandler: NextApiHandler = async (req, res) => {
 	const term = req.query["term"]
+
+	if (!hasOptions()) {
+		return res.status(500).json({ error: "Missing environment variables" })
+	}
 
 	if (!term || Array.isArray(term)) {
 		return res.status(400).json({ error: "Please provide a search term" })
