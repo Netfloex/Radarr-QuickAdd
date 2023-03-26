@@ -12,7 +12,7 @@ export const http = got.extend({
 	hooks: {
 		beforeError: [
 			(err): RequestError => {
-				console.log("error in request to" + err.options.url)
+				console.log("error in request to " + err.options.url)
 				console.log(err.response?.body)
 
 				return err

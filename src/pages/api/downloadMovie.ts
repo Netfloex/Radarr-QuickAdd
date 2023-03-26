@@ -1,8 +1,8 @@
 import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
 import { HTTPError } from "got"
 import { NextApiHandler } from "next"
-import { downloadMovie } from "src/utils/downloadMovie"
 
+import { downloadMovie } from "@utils/downloadMovie"
 import { hasOptions } from "@utils/getOptions"
 
 const downloadMovieHandler: NextApiHandler = async (req, res) => {
