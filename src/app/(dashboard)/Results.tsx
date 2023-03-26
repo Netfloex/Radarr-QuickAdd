@@ -1,9 +1,11 @@
-import ky, { HTTPError } from "ky"
+import ky from "ky"
 import type { FC } from "react"
 import { MovieItem } from "src/app/(dashboard)/MovieItem"
 import useSWR from "swr"
 
-import { List, ListItem } from "@mui/joy"
+import { CircularProgress, List, ListItem } from "@mui/joy"
+
+import { ErrorAlert } from "@components/ErrorAlert"
 
 import { MovieResult } from "@typings/Movie"
 
@@ -19,17 +21,8 @@ const search = (query: string): Promise<MovieResult[]> => {
 export const Results: FC<{ query: string }> = ({ query }) => {
 	const { data, error, isLoading } = useSWR(query, search)
 
-	if (error instanceof HTTPError) {
-		console.log(error.response.body)
-
-		return (
-			<>
-				Error when making request to <pre>{error.request.url}</pre>
-			</>
-		)
-	}
-	if (error) return <div>failed to load</div>
-	if (isLoading) return <div>loading...</div>
+	if (error) return <ErrorAlert error={error} />
+	if (isLoading) return <CircularProgress />
 
 	if (!data || !data.length) return null
 

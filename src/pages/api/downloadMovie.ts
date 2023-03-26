@@ -19,7 +19,7 @@ const downloadMovieHandler: NextApiHandler = async (req, res) => {
 		return res.status(400).json(parsed.error)
 	}
 
-	await downloadMovie(parsed.data).catch((err) => {
+	const downloading = await downloadMovie(parsed.data).catch((err) => {
 		if (err instanceof HTTPError) {
 			if (err.response.statusCode == 400) {
 				return res.status(400).json(err.response.body)
@@ -27,7 +27,7 @@ const downloadMovieHandler: NextApiHandler = async (req, res) => {
 		}
 	})
 
-	return res.json({})
+	return res.json({ downloading })
 }
 
 export default downloadMovieHandler

@@ -2,15 +2,14 @@ import { addMovie } from "@api/addMovie"
 import { downloadRelease } from "@api/downloadRelease"
 import { getReleases } from "@api/getReleases"
 import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
-import chalk from "chalk"
 import chk from "chalk-template"
 import { filesize } from "filesize"
 
 export const downloadMovie = async (
 	movie: DownloadMovieBody,
-): Promise<void> => {
+): Promise<boolean> => {
 	if (!movie.id) {
-		console.log(chalk.yellow("Adding movie..."))
+		console.log(chk`{yellow Adding movie {dim ${movie.title}}...}`)
 
 		movie.id = await addMovie({
 			title: movie.title,
@@ -18,19 +17,19 @@ export const downloadMovie = async (
 		})
 	}
 
-	console.log(chalk.yellow("Searching releases..."))
+	console.log(chk`Searching releases for {dim ${movie.title}} ...`)
 	const releases = await getReleases(movie.id)
 
 	const unrejected = releases.filter((release) => !release.rejected)
 
 	if (!unrejected.length) {
-		return console.log(
-			"There only exist rejected releases, is the movie already downloaded?",
-		)
+		console.log(chk`Movie: {dim ${movie.title}} only has rejected releases`)
+
+		return false
 	}
-	const best = unrejected.reduce((prev, cur) => {
-		return prev.seeders > cur.seeders ? prev : cur
-	})
+	const best = unrejected.reduce((prev, cur) =>
+		prev.seeders > cur.seeders ? prev : cur,
+	)
 
 	console.log(
 		chk`${filesize(best.size)} {cyan ${best.title}} {magenta ${
@@ -38,7 +37,7 @@ export const downloadMovie = async (
 		}} {yellow ${best.quality.quality.name}}`,
 	)
 
-	console.log(chalk.yellow("Downloading..."))
-
 	await downloadRelease(best)
+
+	return true
 }
