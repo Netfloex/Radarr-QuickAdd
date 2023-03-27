@@ -1,6 +1,6 @@
-import { MovieSearchResult } from "@schemas/MovieSearchResult"
-
 import { http } from "./http"
+
+import { MovieSearchResult } from "@schemas/MovieSearchResult"
 
 export const search = async (term: string): Promise<MovieSearchResult[]> => {
 	const data = await http

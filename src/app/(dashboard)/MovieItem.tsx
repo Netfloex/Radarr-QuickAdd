@@ -1,11 +1,8 @@
 import styles from "./MovieItem.module.scss"
 
-import { MovieSearchResult } from "@schemas/MovieSearchResult"
 import { Duration } from "luxon"
 import Image from "next/image"
 import { FC } from "react"
-import { DownloadButton } from "src/app/(dashboard)/DownloadButton"
-import { MovieStatus } from "src/app/(dashboard)/MovieStatus"
 
 import {
 	AspectRatio,
@@ -14,6 +11,11 @@ import {
 	CardOverflow,
 	Typography,
 } from "@mui/joy"
+
+import { DownloadButton } from "./DownloadButton"
+import { MovieStatus } from "./MovieStatus"
+
+import { MovieSearchResult } from "@schemas/MovieSearchResult"
 
 export const MovieItem: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 	return (

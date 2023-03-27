@@ -1,7 +1,8 @@
 import styles from "./MovieStatus.module.scss"
 
-import { MovieSearchResult } from "@schemas/MovieSearchResult"
 import type { FC } from "react"
+
+import { MovieSearchResult } from "@schemas/MovieSearchResult"
 
 export const MovieStatus: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 	if (movie.queueStatus == undefined && !movie.hasFile) return <></>

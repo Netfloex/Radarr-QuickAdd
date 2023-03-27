@@ -1,4 +1,5 @@
 import { http } from "@api/http"
+
 import { Release } from "@schemas/Release"
 
 export const getReleases = async (movieId: number): Promise<Release[]> => {

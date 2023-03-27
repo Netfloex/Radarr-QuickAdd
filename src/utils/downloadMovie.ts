@@ -1,11 +1,12 @@
-import { addMovie } from "@api/addMovie"
-import { downloadRelease } from "@api/downloadRelease"
-import { getReleases } from "@api/getReleases"
-import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
 import chk from "chalk-template"
 import { filesize } from "filesize"
 
-import { Release } from "@typings/Release"
+import { addMovie } from "@api/addMovie"
+import { downloadRelease } from "@api/downloadRelease"
+import { getReleases } from "@api/getReleases"
+
+import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
+import { Release } from "@schemas/Release"
 
 export const downloadMovie = async (
 	movie: DownloadMovieBody,

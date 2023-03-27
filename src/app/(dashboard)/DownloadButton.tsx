@@ -1,5 +1,3 @@
-import { MovieSearchResult } from "@schemas/MovieSearchResult"
-import { Release } from "@schemas/Release"
 import { filesize } from "filesize"
 import ky from "ky"
 import type { FC } from "react"
@@ -17,10 +15,12 @@ import {
 
 import { ErrorAlert } from "@components/ErrorAlert"
 
-import { DownloadMovieOptions } from "@typings/DownloadMovieOptions"
+import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
+import { MovieSearchResult } from "@schemas/MovieSearchResult"
+import { Release } from "@schemas/Release"
 
 const requestDownloadMovie = (
-	options: DownloadMovieOptions,
+	options: DownloadMovieBody,
 ): Promise<{ downloading: false | Release }> => {
 	return ky
 		.post("/api/downloadMovie", {
@@ -30,7 +30,7 @@ const requestDownloadMovie = (
 		.json()
 }
 export const DownloadButton: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
-	const options: DownloadMovieOptions = {
+	const options: DownloadMovieBody = {
 		id: movie.id,
 		title: movie.title,
 		tmdbId: movie.tmdbId,

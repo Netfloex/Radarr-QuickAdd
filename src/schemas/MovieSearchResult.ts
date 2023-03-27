@@ -1,5 +1,6 @@
-import { QueueDetails } from "@schemas/QueueDetails"
 import { z } from "zod"
+
+import { QueueDetails } from "@schemas/QueueDetails"
 
 export const MovieSearchResult = z.object({
 	title: z.string(),

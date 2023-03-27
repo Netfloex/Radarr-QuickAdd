@@ -1,4 +1,5 @@
 import { http } from "@api/http"
+
 import { QueueDetails } from "@schemas/QueueDetails"
 
 export const queueDetails = async (): Promise<QueueDetails[]> => {

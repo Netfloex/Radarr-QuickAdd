@@ -1,6 +1,6 @@
-import { http } from "@api/http"
-
 import { getOptions } from "@utils/getOptions"
+
+import { http } from "@api/http"
 
 interface AddMovieOptions {
 	tmdbId: number
