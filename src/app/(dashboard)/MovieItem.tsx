@@ -1,3 +1,5 @@
+import styles from "./MovieItem.module.scss"
+
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
 import { Duration } from "luxon"
 import Image from "next/image"
@@ -15,9 +17,9 @@ import {
 
 export const MovieItem: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 	return (
-		<Card orientation="horizontal">
+		<Card orientation="horizontal" className={styles.movieItem}>
 			<CardOverflow>
-				<AspectRatio ratio={2 / 3} sx={{ width: "15rem" }}>
+				<AspectRatio ratio={2 / 3} className={styles.poster}>
 					{movie.remotePoster && (
 						<Image
 							src={movie.remotePoster}

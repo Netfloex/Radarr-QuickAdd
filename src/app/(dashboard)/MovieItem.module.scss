@@ -1,0 +1,11 @@
+.movieItem {
+	width: 100%;
+
+	.poster {
+		width: 10rem;
+
+		@media screen and (min-width: 600px) {
+			width: 15rem;
+		}
+	}
+}
