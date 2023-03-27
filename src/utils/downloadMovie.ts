@@ -5,9 +5,11 @@ import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
 import chk from "chalk-template"
 import { filesize } from "filesize"
 
+import { Release } from "@typings/Release"
+
 export const downloadMovie = async (
 	movie: DownloadMovieBody,
-): Promise<boolean> => {
+): Promise<Release | false> => {
 	if (!movie.id) {
 		console.log(chk`{yellow Adding movie {dim ${movie.title}}...}`)
 
@@ -39,5 +41,5 @@ export const downloadMovie = async (
 
 	await downloadRelease(best)
 
-	return true
+	return best
 }

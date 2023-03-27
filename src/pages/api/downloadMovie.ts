@@ -25,6 +25,8 @@ const downloadMovieHandler: NextApiHandler = async (req, res) => {
 				return res.status(400).json(err.response.body)
 			}
 		}
+		res.status(500).json({ error: "Unexpected Error" })
+		throw err
 	})
 
 	return res.json({ downloading })

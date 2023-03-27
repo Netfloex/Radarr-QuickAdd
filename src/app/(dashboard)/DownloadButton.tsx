@@ -1,10 +1,19 @@
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
+import { Release } from "@schemas/Release"
+import { filesize } from "filesize"
 import ky from "ky"
 import type { FC } from "react"
 import { MdWarning } from "react-icons/md"
 import useSWRMutation from "swr/mutation"
 
-import { Alert, Button, LinearProgress, SvgIcon } from "@mui/joy"
+import {
+	Alert,
+	Button,
+	Chip,
+	LinearProgress,
+	SvgIcon,
+	Typography,
+} from "@mui/joy"
 
 import { ErrorAlert } from "@components/ErrorAlert"
 
@@ -12,7 +21,7 @@ import { DownloadMovieOptions } from "@typings/DownloadMovieOptions"
 
 const requestDownloadMovie = (
 	options: DownloadMovieOptions,
-): Promise<{ downloading: boolean }> => {
+): Promise<{ downloading: false | Release }> => {
 	return ky
 		.post("/api/downloadMovie", {
 			json: options,
@@ -36,15 +45,32 @@ export const DownloadButton: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 		return <ErrorAlert error={error} />
 	}
 
-	if (data && !data.downloading) {
-		return (
-			<Alert
-				color="warning"
-				startDecorator={<SvgIcon component={MdWarning} />}
-			>
-				Only found rejected releases
-			</Alert>
-		)
+	if (data) {
+		if (data.downloading == false) {
+			return (
+				<Alert
+					color="warning"
+					startDecorator={<SvgIcon component={MdWarning} />}
+				>
+					Only found rejected releases
+				</Alert>
+			)
+		} else if (data.downloading?.title) {
+			return (
+				<Typography>
+					<>
+						{data.downloading.title}
+						<Chip>{data.downloading.quality.quality.name}</Chip>
+						<> </>
+						<Chip color="info">
+							<>{filesize(data.downloading.size)}</>
+						</Chip>
+						<> </>
+						<Chip color="neutral">{data.downloading.seeders}</Chip>
+					</>
+				</Typography>
+			)
+		}
 	}
 
 	if (movie.queueStatus !== undefined) {
