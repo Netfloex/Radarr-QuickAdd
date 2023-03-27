@@ -9,7 +9,16 @@ import { trpc } from "@utils/trpc"
 import { FCC } from "@typings/FCC"
 
 export const TrpcProvider: FCC = ({ children }) => {
-	const queryClient = useConstant(() => new QueryClient())
+	const queryClient = useConstant(
+		() =>
+			new QueryClient({
+				defaultOptions: {
+					queries: {
+						refetchOnWindowFocus: false,
+					},
+				},
+			}),
+	)
 	const trpcClient = useConstant(() =>
 		trpc.createClient({
 			links: [

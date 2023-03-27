@@ -5,9 +5,9 @@ import type { FC } from "react"
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
 
 export const MovieStatus: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
-	if (movie.queueStatus == undefined && !movie.hasFile) return <></>
+	if (!movie.hasFile) return <></>
 
-	const status = movie.hasFile ? "downloaded" : movie.queueStatus!.status
+	const status = "downloaded"
 
 	const color =
 		status == "downloaded"
@@ -22,7 +22,6 @@ export const MovieStatus: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 			style={{
 				backgroundColor: color,
 			}}
-			title={movie.queueStatus?.errorMessage}
 		>
 			{status}
 		</div>

@@ -1,7 +1,5 @@
 import { z } from "zod"
 
-import { QueueDetails } from "@schemas/QueueDetails"
-
 export const MovieSearchResult = z.object({
 	title: z.string(),
 	year: z.number(),
@@ -11,8 +9,6 @@ export const MovieSearchResult = z.object({
 	runtime: z.number(),
 	id: z.number().optional(),
 	hasFile: z.boolean().optional(),
-
-	queueStatus: QueueDetails.optional(),
 })
 
 export type MovieSearchResult = z.output<typeof MovieSearchResult>

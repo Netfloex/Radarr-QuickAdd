@@ -1,34 +1,16 @@
 import { filesize } from "filesize"
-import ky from "ky"
 import type { FC } from "react"
 import { MdWarning } from "react-icons/md"
-import useSWRMutation from "swr/mutation"
 
-import {
-	Alert,
-	Button,
-	Chip,
-	LinearProgress,
-	SvgIcon,
-	Typography,
-} from "@mui/joy"
+import { Alert, Button, Chip, SvgIcon, Typography } from "@mui/joy"
+
+import { trpc } from "@utils/trpc"
 
 import { ErrorAlert } from "@components/ErrorAlert"
 
 import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
-import { Release } from "@schemas/Release"
 
-const requestDownloadMovie = (
-	options: DownloadMovieBody,
-): Promise<{ downloading: false | Release }> => {
-	return ky
-		.post("/api/downloadMovie", {
-			json: options,
-			timeout: 1000 * 60,
-		})
-		.json()
-}
 export const DownloadButton: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 	const options: DownloadMovieBody = {
 		id: movie.id,
@@ -36,17 +18,15 @@ export const DownloadButton: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 		tmdbId: movie.tmdbId,
 	}
 
-	const { trigger, data, error, isMutating } = useSWRMutation(
-		options,
-		requestDownloadMovie,
-	)
+	const { isInitialLoading, isError, data, error, refetch } =
+		trpc.downloadMovie.useQuery(options, { enabled: false })
 
-	if (error) {
+	if (isError) {
 		return <ErrorAlert error={error} />
 	}
 
-	if (data) {
-		if (data.downloading == false) {
+	if (data !== undefined) {
+		if (data === false) {
 			return (
 				<Alert
 					color="warning"
@@ -55,50 +35,30 @@ export const DownloadButton: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 					Only found rejected releases
 				</Alert>
 			)
-		} else if (data.downloading?.title) {
+		} else {
 			return (
 				<Typography>
 					<>
-						{data.downloading.title}
-						<Chip>{data.downloading.quality.quality.name}</Chip>
+						{data.title}
+						<Chip>{data.quality.quality.name}</Chip>
 						<> </>
 						<Chip color="info">
-							<>{filesize(data.downloading.size)}</>
+							<>{filesize(data.size)}</>
 						</Chip>
 						<> </>
-						<Chip color="neutral">{data.downloading.seeders}</Chip>
+						<Chip color="neutral">{data.seeders}</Chip>
 					</>
 				</Typography>
 			)
 		}
 	}
 
-	if (movie.queueStatus !== undefined) {
-		const percentage =
-			((movie.queueStatus.size - movie.queueStatus.sizeleft) /
-				movie.queueStatus.size) *
-			100
-
-		return (
-			<LinearProgress
-				determinate
-				color={
-					movie.queueStatus.status !== "downloading"
-						? "danger"
-						: "info"
-				}
-				variant="plain"
-				value={percentage}
-			/>
-		)
-	}
-
 	return (
 		<>
 			<Button
 				disabled={movie.hasFile || data !== undefined}
-				onClick={(): void => void trigger()}
-				loading={isMutating}
+				onClick={(): void => void refetch()}
+				loading={isInitialLoading}
 				color={data !== undefined ? "success" : undefined}
 			>
 				Download
