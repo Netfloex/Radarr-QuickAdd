@@ -2,6 +2,13 @@ import { Response } from "got"
 
 import { http } from "./http"
 
-export const healthCheck = async (): Promise<Response<string>> => {
-	return http.get("health", { throwHttpErrors: false, responseType: "json" })
+export type HealthCheck = Array<Record<string, unknown>>
+
+export const healthCheck = async (): Promise<Response<HealthCheck>> => {
+	const resp = http.get<HealthCheck>("health", {
+		throwHttpErrors: false,
+		responseType: "json",
+	})
+
+	return resp
 }

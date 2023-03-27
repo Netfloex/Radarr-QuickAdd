@@ -18,7 +18,7 @@ module.exports = {
 		"<THIRD_PARTY_MODULES>",
 		"^@mui/.*",
 		"^@hooks$",
-		"^(@lib)|(@utils)|(@server)$",
+		"^(@lib)|(@utils)|(@server)/.*$",
 		"^(@|\\./)components/*",
 		"^\\.?\\./.*",
 		"^@client/.*",

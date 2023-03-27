@@ -1,21 +1,12 @@
-import ky, { HTTPError } from "ky"
 import type { FC } from "react"
 import { MdError } from "react-icons/md"
-import useSWR from "swr"
 
 import { Alert, CircularProgress, SvgIcon, Typography } from "@mui/joy"
 
-interface HealthCheckResponse {
-	status?: number
-	code?: string
-	body?: string
-}
-
-const fetcher = (url: string): Promise<HealthCheckResponse> =>
-	ky.get(url, { throwHttpErrors: false }).json()
+import { trpc } from "@utils/trpc"
 
 export const StatusCheck: FC = () => {
-	const { data, error, isLoading } = useSWR("/api/healthcheck", fetcher)
+	const { data, error, isLoading } = trpc.healthcheck.useQuery()
 
 	if (isLoading) {
 		return (
@@ -26,54 +17,38 @@ export const StatusCheck: FC = () => {
 	}
 
 	if (error) {
-		console.log(error)
-		if (error instanceof HTTPError) {
-			return (
-				<>
-					<></>
-					{error.message}
-				</>
-			)
+		console.error(error)
+
+		return <>{error.message}</>
+	}
+
+	if (Array.isArray(data)) {
+		return null
+	}
+
+	let errorMessage = "Unknown Error"
+
+	if ("status" in data) {
+		if (data.status == 401) {
+			errorMessage = "Api key is incorrect"
+		} else {
+			errorMessage = `Request failed with status ${data.status}`
 		}
-
-		return <></>
+	} else if ("code" in data) {
+		errorMessage = `Request failed: ${data.code}`
+	} else if (data.incorrectEnv) {
+		errorMessage = `The environment variables are incorrect/missing`
 	}
 
-	if (!data) {
-		return <>No Data</>
-	}
-
-	if (data.status == 401) {
-		return <Alert color="danger">Api Key is incorrect</Alert>
-	}
-
-	if (data?.status || data?.code)
-		return (
-			<>
-				<Alert
-					startDecorator={<SvgIcon component={MdError} />}
-					color="danger"
-				>
-					<Typography>
-						{data.status !== undefined && (
-							<>Request failed with status {data.status}</>
-						)}
-						{data.code !== undefined && (
-							<>
-								Request failed: <b>{data.code}</b>
-							</>
-						)}
-					</Typography>
-				</Alert>
-				{data.body !== undefined && <pre>{data.body}</pre>}
-			</>
-		)
-
-	return null
-	// return (
-	// 	<IconButton variant="solid" color="success">
-	// 		<SvgIcon component={MdCheck} />
-	// 		{/* <MdCheck /> */}
-	// 	</IconButton>
-	// )
+	return (
+		<>
+			<Alert
+				startDecorator={<SvgIcon component={MdError} />}
+				color="danger"
+			>
+				<Typography>{errorMessage}</Typography>
+			</Alert>
+			{"body" in data && <pre>{data.body}</pre>}
+		</>
+	)
 }
