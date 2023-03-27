@@ -40,7 +40,7 @@ export const StatusCheck: FC = () => {
 	}
 
 	if (!data) {
-		return <></>
+		return <>No Data</>
 	}
 
 	if (data.status == 401) {
