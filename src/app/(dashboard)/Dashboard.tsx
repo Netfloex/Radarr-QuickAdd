@@ -2,6 +2,7 @@
 
 import styles from "./Dashboard.module.scss"
 
+import Link from "next/link"
 import { useState } from "react"
 
 import { Results } from "./Results"
@@ -16,6 +17,7 @@ export const Dashboard: FC = () => {
 	return (
 		<div className={styles.dashboard}>
 			<SearchField query={query} setQuery={setQuery} />
+			<Link href="/settings">Settings</Link>
 			<StatusCheck />
 			<Results query={query} />
 		</div>
