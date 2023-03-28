@@ -1,9 +1,10 @@
-import type { FC } from "react"
 import { MdError } from "react-icons/md"
 
 import { Alert, CircularProgress, SvgIcon, Typography } from "@mui/joy"
 
 import { trpc } from "@utils/trpc"
+
+import type { FC } from "react"
 
 export const StatusCheck: FC = () => {
 	const { data, error, isLoading } = trpc.healthcheck.useQuery()

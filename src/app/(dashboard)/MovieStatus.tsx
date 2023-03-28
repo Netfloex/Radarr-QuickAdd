@@ -1,8 +1,8 @@
 import styles from "./MovieStatus.module.scss"
 
-import type { FC } from "react"
-
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
+
+import type { FC } from "react"
 
 import { FoundQueueItem } from "@typings/FoundQueueItem"
 

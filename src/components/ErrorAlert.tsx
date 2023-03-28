@@ -1,8 +1,9 @@
-import type { FC } from "react"
 import { MdError } from "react-icons/md"
 import { inspect } from "util"
 
 import { Alert, SvgIcon, Typography } from "@mui/joy"
+
+import type { FC } from "react"
 
 export const ErrorAlert: FC<{ error: unknown }> = ({ error }) => {
 	return (

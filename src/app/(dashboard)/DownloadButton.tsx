@@ -1,7 +1,6 @@
 import styles from "./DownloadButton.module.scss"
 
 import { filesize } from "filesize"
-import type { FC } from "react"
 import { MdCheck, MdWarning } from "react-icons/md"
 
 import { Alert, Button, Chip, SvgIcon } from "@mui/joy"
@@ -12,6 +11,8 @@ import { ErrorAlert } from "@components/ErrorAlert"
 
 import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
+
+import type { FC } from "react"
 
 export const DownloadButton: FC<{
 	movie: MovieSearchResult

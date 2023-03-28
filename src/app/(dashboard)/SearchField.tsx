@@ -1,8 +1,8 @@
 import styles from "./SearchField.module.scss"
 
-import type { Dispatch, FC, SetStateAction } from "react"
-
 import { Input } from "@components/joy"
+
+import type { Dispatch, FC, SetStateAction } from "react"
 
 export const SearchField: FC<{
 	query: string

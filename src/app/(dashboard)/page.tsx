@@ -1,7 +1,7 @@
-import type { Metadata } from "next"
-import { FC } from "react"
-
 import { Dashboard } from "./Dashboard"
+
+import type { Metadata } from "next"
+import type { FC } from "react"
 
 export const metadata: Metadata = {
 	title: "Radarr Quickadd",

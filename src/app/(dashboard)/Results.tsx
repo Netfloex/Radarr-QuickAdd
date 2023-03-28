@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { MovieItem } from "src/app/(dashboard)/MovieItem"
 
 import { CircularProgress, List, ListItem } from "@mui/joy"
@@ -6,6 +5,8 @@ import { CircularProgress, List, ListItem } from "@mui/joy"
 import { trpc } from "@utils/trpc"
 
 import { ErrorAlert } from "@components/ErrorAlert"
+
+import type { FC } from "react"
 
 export const Results: FC<{ query: string }> = ({ query }) => {
 	const { data, error, isInitialLoading, isLoading } = trpc.search.useQuery(

@@ -1,12 +1,10 @@
 import "@styles/global.scss"
 
-import { SWRGlobalConfig } from "src/components/SWRGlobalConfig"
-
 import { InitColorSchemeScript } from "@components/InitColorSchemeScript"
 import { TrpcProvider } from "@components/TrpcProvider"
 import { CssBaseline, CssVarsProvider } from "@components/joy"
 
-import { FCC } from "@typings/FCC"
+import type { FCC } from "@typings/FCC"
 
 const RootLayout: FCC = ({ children }) => (
 	<html lang="en" data-joy-color-scheme="dark">
@@ -19,7 +17,7 @@ const RootLayout: FCC = ({ children }) => (
 				<CssVarsProvider defaultMode="system">
 					<InitColorSchemeScript />
 					<CssBaseline />
-					<SWRGlobalConfig>{children}</SWRGlobalConfig>
+					{children}
 				</CssVarsProvider>
 			</TrpcProvider>
 		</body>

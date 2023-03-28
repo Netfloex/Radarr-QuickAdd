@@ -1,11 +1,11 @@
 import styles from "./MovieProgress.module.scss"
 
-import type { FC } from "react"
-
 import { Box, Divider } from "@mui/joy"
 import LinearProgress from "@mui/joy/LinearProgress"
 
 import { QueueDetails } from "@schemas/QueueDetails"
+
+import type { FC } from "react"
 
 export const MovieProgress: FC<{ queueStatus: QueueDetails }> = ({
 	queueStatus,
