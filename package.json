@@ -1,7 +1,7 @@
 {
 	"name": "quickadd",
-	"version": "1.0.0",
-	"description": "",
+	"version": "0.1.0",
+	"description": "Easily download movies from radarr",
 	"main": ".next/standalone/server",
 	"scripts": {
 		"typescript": "tsc --noEmit --skipLibCheck true",

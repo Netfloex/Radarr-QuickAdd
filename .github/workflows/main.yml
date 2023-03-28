@@ -33,7 +33,7 @@ jobs:
               uses: docker/metadata-action@v4
               with:
                   images: |
-                      netfloex/radarr-quickadd
+                      netfloex/quickadd
                   tags: |
                       type=semver,pattern=v{{major}}.{{minor}}.{{patch}}
                       type=semver,pattern=v{{major}}.{{minor}}
