@@ -6,12 +6,12 @@ import { ErrorAlert } from "@components/ErrorAlert"
 
 import { SelectSetting } from "./SelectSetting"
 
+import { Settings } from "@schemas/Settings"
+
 import type { Dispatch, FC, SetStateAction } from "react"
 
-import { DownloadSettings } from "@typings/DownloadSettings"
-
 export const RootPathSetting: FC<{
-	setSettings: Dispatch<SetStateAction<DownloadSettings>>
+	setSettings: Dispatch<SetStateAction<Partial<Settings>>>
 }> = ({ setSettings }) => {
 	const { data, error, isLoading } = trpc.rootFolder.useQuery()
 
@@ -27,7 +27,7 @@ export const RootPathSetting: FC<{
 						({
 							...settings,
 							rootPath: value as string,
-						} satisfies DownloadSettings),
+						} satisfies Partial<Settings>),
 				)
 			}
 		>

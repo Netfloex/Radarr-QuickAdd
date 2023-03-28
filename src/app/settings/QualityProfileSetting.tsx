@@ -1,17 +1,17 @@
-import { SelectSetting } from "src/app/settings/SelectSetting"
-
 import { Option } from "@mui/joy"
 
 import { trpc } from "@utils/trpc"
 
 import { ErrorAlert } from "@components/ErrorAlert"
 
+import { SelectSetting } from "./SelectSetting"
+
+import { Settings } from "@schemas/Settings"
+
 import type { Dispatch, FC, SetStateAction } from "react"
 
-import { DownloadSettings } from "@typings/DownloadSettings"
-
 export const QualityProfileSetting: FC<{
-	setSettings: Dispatch<SetStateAction<DownloadSettings>>
+	setSettings: Dispatch<SetStateAction<Partial<Settings>>>
 }> = ({ setSettings }) => {
 	const { data, error, isLoading } = trpc.qualityProfiles.useQuery()
 
@@ -27,7 +27,7 @@ export const QualityProfileSetting: FC<{
 						({
 							...settings,
 							qualityProfileId: value as number,
-						} satisfies DownloadSettings),
+						} satisfies Partial<Settings>),
 				)
 			}
 		>

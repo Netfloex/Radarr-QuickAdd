@@ -2,17 +2,40 @@
 
 import styles from "./Settings.module.scss"
 
-import { FC, useState } from "react"
-import { QualityProfileSetting } from "src/app/settings/QualityProfileSetting"
+import { FC, useCallback, useState } from "react"
 
 import { Button, Card, Typography } from "@mui/joy"
 
+import { trpc } from "@utils/trpc"
+
+import { QualityProfileSetting } from "./QualityProfileSetting"
 import { RootPathSetting } from "./RootPathSetting"
 
-import type { DownloadSettings } from "@typings/DownloadSettings"
+import type { Settings as DownloadSettings } from "@schemas/Settings"
 
 export const Settings: FC = () => {
-	const [settings, setSettings] = useState<DownloadSettings>({})
+	const [settings, setSettings] = useState<Partial<DownloadSettings>>({})
+	const [savedSettings, setSavedSettings] = useState<
+		Partial<DownloadSettings> | false
+	>(false)
+	const { data, refetch, isInitialLoading } = trpc.saveSettings.useQuery(
+		settings as Required<DownloadSettings>,
+		{
+			enabled: false,
+		},
+	)
+
+	const save = useCallback(() => {
+		refetch({}).then(() => {
+			setSavedSettings(settings)
+		})
+	}, [refetch, settings])
+
+	const success =
+		data === true &&
+		savedSettings !== false &&
+		savedSettings.qualityProfileId === settings.qualityProfileId &&
+		savedSettings.rootPath === settings.rootPath
 
 	return (
 		<div className={`container ${styles.settings}`}>
@@ -25,10 +48,14 @@ export const Settings: FC = () => {
 				<Button
 					disabled={
 						settings.qualityProfileId === undefined ||
-						settings.rootPath === undefined
+						settings.rootPath === undefined ||
+						success
 					}
+					color={success ? "success" : undefined}
+					loading={isInitialLoading}
+					onClick={save}
 				>
-					Save
+					{success ? "Saved Successfully " : "Save"}
 				</Button>
 			</Card>
 		</div>
