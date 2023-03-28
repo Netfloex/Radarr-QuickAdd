@@ -1,33 +1,41 @@
-"use client"
-
-import { CircularProgress, Option, Select } from "@mui/joy"
-import FormControl from "@mui/joy/FormControl"
-import FormLabel from "@mui/joy/FormLabel"
+import { Option } from "@mui/joy"
 
 import { trpc } from "@utils/trpc"
 
 import { ErrorAlert } from "@components/ErrorAlert"
 
-import type { FC } from "react"
+import { SelectSetting } from "./SelectSetting"
 
-export const RootPathSetting: FC = () => {
+import type { Dispatch, FC, SetStateAction } from "react"
+
+import { DownloadSettings } from "@typings/DownloadSettings"
+
+export const RootPathSetting: FC<{
+	setSettings: Dispatch<SetStateAction<DownloadSettings>>
+}> = ({ setSettings }) => {
 	const { data, error, isLoading } = trpc.rootFolder.useQuery()
 
-	if (isLoading) {
-		return <CircularProgress />
-	}
 	if (error) return <ErrorAlert error={error} />
 
 	return (
-		<FormControl>
-			<FormLabel>Root Path</FormLabel>
-			<Select placeholder="Root Path">
-				{data.map((folder) => (
-					<Option key={folder.id} value={folder.path}>
-						{folder.path}
-					</Option>
-				))}
-			</Select>
-		</FormControl>
+		<SelectSetting
+			isLoading={isLoading}
+			title="Root Path"
+			setValue={(value): void =>
+				setSettings(
+					(settings) =>
+						({
+							...settings,
+							rootPath: value as string,
+						} satisfies DownloadSettings),
+				)
+			}
+		>
+			{data?.map((folder) => (
+				<Option key={folder.id} value={folder.path}>
+					{folder.path}
+				</Option>
+			))}
+		</SelectSetting>
 	)
 }

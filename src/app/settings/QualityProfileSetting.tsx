@@ -1,33 +1,41 @@
-"use client"
+import { SelectSetting } from "src/app/settings/SelectSetting"
 
-import { CircularProgress, Option, Select } from "@mui/joy"
-import FormControl from "@mui/joy/FormControl"
-import FormLabel from "@mui/joy/FormLabel"
+import { Option } from "@mui/joy"
 
 import { trpc } from "@utils/trpc"
 
 import { ErrorAlert } from "@components/ErrorAlert"
 
-import type { FC } from "react"
+import type { Dispatch, FC, SetStateAction } from "react"
 
-export const QualityProfileSetting: FC = () => {
+import { DownloadSettings } from "@typings/DownloadSettings"
+
+export const QualityProfileSetting: FC<{
+	setSettings: Dispatch<SetStateAction<DownloadSettings>>
+}> = ({ setSettings }) => {
 	const { data, error, isLoading } = trpc.qualityProfiles.useQuery()
 
-	if (isLoading) {
-		return <CircularProgress />
-	}
 	if (error) return <ErrorAlert error={error} />
 
 	return (
-		<FormControl>
-			<FormLabel>Quality Profile</FormLabel>
-			<Select placeholder="Quality Profile">
-				{data.map((profile) => (
-					<Option key={profile.id} value={profile.id}>
-						{profile.name}
-					</Option>
-				))}
-			</Select>
-		</FormControl>
+		<SelectSetting
+			isLoading={isLoading}
+			title="Quality Profile"
+			setValue={(value): void =>
+				setSettings(
+					(settings) =>
+						({
+							...settings,
+							qualityProfileId: value as number,
+						} satisfies DownloadSettings),
+				)
+			}
+		>
+			{data?.map((profile) => (
+				<Option key={profile.id} value={profile.id}>
+					{profile.name}
+				</Option>
+			))}
+		</SelectSetting>
 	)
 }

@@ -1,7 +1,16 @@
-body {
-	margin: 0;
-	background-color: #222;
-	color: white;
-	color-scheme: dark;
-	font-family: sans-serif;
+.container {
+	@media screen and (min-width: 600px) {
+		margin-right: 1rem;
+		margin-left: 1rem;
+	}
+
+	@media screen and (min-width: 800px) {
+		margin-right: 4rem;
+		margin-left: 4rem;
+	}
+
+	@media screen and (min-width: 1200px) {
+		margin-right: 16rem;
+		margin-left: 16rem;
+	}
 }
