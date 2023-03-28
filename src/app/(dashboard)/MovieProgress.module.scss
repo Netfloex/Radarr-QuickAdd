@@ -1,0 +1,12 @@
+.movieProgress {
+	display: flex;
+	align-items: center;
+	padding: 12px var(--Card-padding);
+	border-radius: 10px;
+	background-color: var(--joy-palette-background-level1);
+	gap: 12px;
+}
+
+.progress {
+	height: min-content;
+}

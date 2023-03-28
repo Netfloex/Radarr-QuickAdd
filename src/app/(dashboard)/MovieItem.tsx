@@ -3,6 +3,7 @@ import styles from "./MovieItem.module.scss"
 import { Duration } from "luxon"
 import Image from "next/image"
 import { FC } from "react"
+import { MovieProgress } from "src/app/(dashboard)/MovieProgress"
 
 import {
 	AspectRatio,
@@ -12,12 +13,24 @@ import {
 	Typography,
 } from "@mui/joy"
 
+import { trpc } from "@utils/trpc"
+
 import { DownloadButton } from "./DownloadButton"
 import { MovieStatus } from "./MovieStatus"
 
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
 
+import { FoundQueueItem } from "@typings/FoundQueueItem"
+
 export const MovieItem: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
+	const { data, isError, isLoading } = trpc.queueDetails.useQuery(undefined, {
+		refetchOnWindowFocus: true,
+	})
+
+	const queueItem: FoundQueueItem = isLoading
+		? null
+		: data?.find((item) => item.movieId == movie.id) ?? false
+
 	return (
 		<Card orientation="horizontal" className={styles.movieItem}>
 			<CardOverflow>
@@ -30,20 +43,27 @@ export const MovieItem: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 							alt={movie.title}
 						/>
 					)}
-					<MovieStatus movie={movie} />
+					<MovieStatus movie={movie} queueItem={queueItem} />
 				</AspectRatio>
 			</CardOverflow>
-			<CardContent sx={{ px: 2 }}>
-				<Typography level="h2">
-					{movie.title} ({movie.year})
+			<CardContent sx={{ px: 2, justifyContent: "space-between" }}>
+				<Typography>
+					<Typography level="h2" display="block">
+						{movie.title} ({movie.year})
+					</Typography>
+					<Typography level="body4" display="block">
+						{Duration.fromObject({ minutes: movie.runtime })
+							.shiftTo("hours", "minutes")
+							.toHuman()}
+					</Typography>
+					<Typography>{movie.overview}</Typography>
 				</Typography>
-				<Typography level="body4">
-					{Duration.fromObject({ minutes: movie.runtime })
-						.shiftTo("hours", "minutes")
-						.toHuman()}
-				</Typography>
-				<Typography>{movie.overview}</Typography>
-				<DownloadButton movie={movie} />
+				{!!queueItem ? (
+					<MovieProgress queueStatus={queueItem} />
+				) : (
+					<DownloadButton movie={movie} />
+				)}
+				{isError && <>An error occurred fetching the queue</>}
 			</CardContent>
 		</Card>
 	)

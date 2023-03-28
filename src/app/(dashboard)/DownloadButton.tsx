@@ -1,8 +1,10 @@
+import styles from "./DownloadButton.module.scss"
+
 import { filesize } from "filesize"
 import type { FC } from "react"
-import { MdWarning } from "react-icons/md"
+import { MdCheck, MdWarning } from "react-icons/md"
 
-import { Alert, Button, Chip, SvgIcon, Typography } from "@mui/joy"
+import { Alert, Button, Chip, SvgIcon } from "@mui/joy"
 
 import { trpc } from "@utils/trpc"
 
@@ -11,7 +13,9 @@ import { ErrorAlert } from "@components/ErrorAlert"
 import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
 
-export const DownloadButton: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
+export const DownloadButton: FC<{
+	movie: MovieSearchResult
+}> = ({ movie }) => {
 	const options: DownloadMovieBody = {
 		id: movie.id,
 		title: movie.title,
@@ -37,7 +41,10 @@ export const DownloadButton: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 			)
 		} else {
 			return (
-				<Typography>
+				<Alert
+					color="success"
+					startDecorator={<SvgIcon component={MdCheck} />}
+				>
 					<>
 						{data.title}
 						<Chip>{data.quality.quality.name}</Chip>
@@ -48,7 +55,7 @@ export const DownloadButton: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 						<> </>
 						<Chip color="neutral">{data.seeders}</Chip>
 					</>
-				</Typography>
+				</Alert>
 			)
 		}
 	}
@@ -60,6 +67,7 @@ export const DownloadButton: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 				onClick={(): void => void refetch()}
 				loading={isInitialLoading}
 				color={data !== undefined ? "success" : undefined}
+				className={styles.downloadButton}
 			>
 				Download
 			</Button>

@@ -4,10 +4,17 @@ import type { FC } from "react"
 
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
 
-export const MovieStatus: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
-	if (!movie.hasFile) return <></>
+import { FoundQueueItem } from "@typings/FoundQueueItem"
 
-	const status = "downloaded"
+export const MovieStatus: FC<{
+	movie: MovieSearchResult
+	queueItem: FoundQueueItem
+}> = ({ movie, queueItem }) => {
+	if (queueItem === null && !movie.hasFile) return null
+
+	if (queueItem === false && !movie.hasFile) return null
+
+	const status = queueItem ? queueItem.status : "downloaded"
 
 	const color =
 		status == "downloaded"
@@ -22,6 +29,11 @@ export const MovieStatus: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 			style={{
 				backgroundColor: color,
 			}}
+			title={
+				queueItem && "errorMessage" in queueItem
+					? queueItem.errorMessage
+					: undefined
+			}
 		>
 			{status}
 		</div>
