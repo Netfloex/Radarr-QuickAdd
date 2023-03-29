@@ -6,3 +6,5 @@
 !/tsconfig.json
 !/yarn.lock
 !/public/manifest.json
+!/public/favicon.ico
+!/public/logo-bg.svg
