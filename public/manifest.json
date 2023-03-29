@@ -1,0 +1,17 @@
+{
+	"name": "Radarr Quickadd",
+	"short_name": "Quickadd",
+	"icons": [
+		{
+			"src": "/logo-bg.svg",
+			"sizes": "any",
+			"purpose": "maskable",
+			"type": "image/svg+xml"
+		}
+	],
+	"theme_color": "#131318",
+	"background_color": "#131318",
+	"start_url": "/",
+	"display": "standalone",
+	"orientation": "portrait"
+}
