@@ -1,6 +1,4 @@
-import { CircularProgress, Select } from "@mui/joy"
-import FormControl from "@mui/joy/FormControl"
-import FormLabel from "@mui/joy/FormLabel"
+import { CircularProgress, FormControl, FormLabel, Select } from "@mui/joy"
 
 import { FCC } from "@typings/FCC"
 

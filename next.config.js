@@ -1,6 +1,6 @@
 // @ts-check
-const { join } = require("path");
-const nextPwa = require("next-pwa");
+const { join } = require("path")
+const nextPwa = require("next-pwa")
 
 /**
  * @type {import('next').NextConfig}
@@ -8,19 +8,25 @@ const nextPwa = require("next-pwa");
 
 const config = {
 	eslint: {
-		ignoreDuringBuilds: true
+		ignoreDuringBuilds: true,
 	},
 	sassOptions: {
-		includePaths: [join(__dirname, "src", "styles")]
+		includePaths: [join(__dirname, "src", "styles")],
 	},
 
 	output: "standalone",
 	experimental: {
-		appDir: true
-	}
-};
+		appDir: true,
+	},
+	modularizeImports: {
+		"@mui/joy": {
+			transform: "@mui/joy/{{member}}",
+			preventFullImport: true,
+		},
+	},
+}
 
 module.exports = nextPwa({
 	dest: "public",
-	disable: process.env.NODE_ENV === "development"
-})(config);
+	disable: process.env.NODE_ENV === "development",
+})(config)

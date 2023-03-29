@@ -1,7 +1,6 @@
 import styles from "./MovieProgress.module.scss"
 
-import { Box, Divider } from "@mui/joy"
-import LinearProgress from "@mui/joy/LinearProgress"
+import { Box, Divider, LinearProgress } from "@mui/joy"
 
 import { QueueDetails } from "@schemas/QueueDetails"
 

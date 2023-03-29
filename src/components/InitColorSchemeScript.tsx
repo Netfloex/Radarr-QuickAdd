@@ -1,6 +1,6 @@
 "use client"
 
-import { getInitColorSchemeScript } from "@mui/joy"
+import { getInitColorSchemeScript } from "@mui/joy/styles/CssVarsProvider"
 
 import type { FC } from "react"
 
