@@ -1,3 +1,4 @@
+import { join } from "path"
 import { z } from "zod"
 
 export const EnvironmentOptions = z.object({
@@ -8,6 +9,11 @@ export const EnvironmentOptions = z.object({
 		.string()
 		.transform(Number)
 		.refine((a) => !isNaN(a)),
+	storePath: z
+		.string()
+		.min(1)
+		.optional()
+		.default(join(process.cwd(), "data", "store.json")),
 })
 
 export type EnvironmentOptions = z.output<typeof EnvironmentOptions>

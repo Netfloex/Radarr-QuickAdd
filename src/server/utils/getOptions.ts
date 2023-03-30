@@ -10,6 +10,7 @@ const parsedOptions = () => {
 		qualityProfile: process.env.QUALITY_PROFILE_ID,
 		rootFolder: process.env.ROOT_FOLDER,
 		serverUrl: process.env.SERVER_URL,
+		storePath: process.env.STORE_PATH,
 	}
 
 	const parsed = EnvironmentOptions.safeParse(options)
@@ -26,7 +27,7 @@ export const getOptions = (
 		if (safe) {
 			return {}
 		}
-		throw new Error("Environment Variables are missing!")
+		throw new Error("Environment Variables are incorrect/missing!")
 	}
 
 	return parsed.data

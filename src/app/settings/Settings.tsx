@@ -8,6 +8,8 @@ import { Button, Card, Typography } from "@mui/joy"
 
 import { trpc } from "@utils/trpc"
 
+import { ErrorAlert } from "@components/ErrorAlert"
+
 import { QualityProfileSetting } from "./QualityProfileSetting"
 import { RootPathSetting } from "./RootPathSetting"
 
@@ -18,18 +20,17 @@ export const Settings: FC = () => {
 	const [savedSettings, setSavedSettings] = useState<
 		Partial<DownloadSettings> | false
 	>(false)
-	const { data, refetch, isInitialLoading } = trpc.saveSettings.useQuery(
-		settings as Required<DownloadSettings>,
-		{
-			enabled: false,
-		},
-	)
+	const { mutateAsync, data, isLoading, isError, error } =
+		trpc.saveSettings.useMutation()
 
 	const save = useCallback(() => {
-		refetch({}).then(() => {
-			setSavedSettings(settings)
-		})
-	}, [refetch, settings])
+		const { qualityProfileId, rootPath } = settings
+		if (qualityProfileId && rootPath) {
+			mutateAsync({ qualityProfileId, rootPath }).then(() => {
+				setSavedSettings(settings)
+			})
+		}
+	}, [mutateAsync, settings])
 
 	const success =
 		data === true &&
@@ -52,11 +53,12 @@ export const Settings: FC = () => {
 						success
 					}
 					color={success ? "success" : undefined}
-					loading={isInitialLoading}
+					loading={isLoading}
 					onClick={save}
 				>
 					{success ? "Saved Successfully " : "Save"}
 				</Button>
+				{isError && <ErrorAlert error={error} />}
 			</Card>
 		</div>
 	)
