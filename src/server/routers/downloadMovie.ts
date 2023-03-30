@@ -1,5 +1,5 @@
 import { procedure } from "@server/trpc"
-import { downloadMovie } from "@utils/downloadMovie"
+import { downloadMovie } from "@server/utils/downloadMovie"
 
 import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
 

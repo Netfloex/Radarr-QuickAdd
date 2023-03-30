@@ -1,4 +1,4 @@
-import { getOptions } from "@utils/getOptions"
+import { getOptions } from "@server/utils/getOptions"
 
 import { http } from "@api/http"
 

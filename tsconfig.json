@@ -4,7 +4,7 @@
 		"paths": {
 			"@typings/*": ["src/typings/*"],
 			"@styles/*": ["src/styles/*"],
-			"@api/*": ["src/api/*"],
+			"@api/*": ["src/server/api/*"],
 			"@components/*": ["src/components/*"],
 			"@utils/*": ["src/utils/*"],
 			"@schemas/*": ["src/schemas/*"],

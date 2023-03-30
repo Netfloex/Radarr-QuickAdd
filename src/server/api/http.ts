@@ -1,6 +1,6 @@
 import got, { RequestError } from "got"
 
-import { getOptions } from "@utils/getOptions"
+import { getOptions } from "@server/utils/getOptions"
 
 const options = getOptions(true)
 

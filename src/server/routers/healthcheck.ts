@@ -1,7 +1,7 @@
 import { RequestError } from "got"
 
 import { procedure } from "@server/trpc"
-import { hasOptions } from "@utils/getOptions"
+import { hasOptions } from "@server/utils/getOptions"
 
 import { HealthCheck, healthCheck } from "@api/healthCheck"
 
