@@ -8,6 +8,7 @@ export const settingsRouter = router({
 		const store = await getStore()
 
 		store.data.qualityProfileId = input.qualityProfileId
+
 		store.data.rootPath = input.rootPath
 
 		await store.write()

@@ -30,6 +30,7 @@ export const downloadMovie = async (
 
 		return false
 	}
+
 	const best = unrejected.reduce((prev, cur) =>
 		prev.seeders > cur.seeders ? prev : cur,
 	)

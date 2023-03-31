@@ -31,6 +31,7 @@ export const useSaveSettings = () => {
 
 	const saveSettings = useCallback(() => {
 		const { qualityProfileId, rootPath } = settings
+
 		if (qualityProfileId && rootPath) {
 			mutateAsync({ qualityProfileId, rootPath }).then(() => {
 				setSavedSettings(settings)

@@ -31,6 +31,7 @@ const healthcheckResolver = async (): Promise<
 			incorrectEnv: true,
 		}
 	}
+
 	try {
 		const data = await healthCheck()
 

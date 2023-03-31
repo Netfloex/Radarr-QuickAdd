@@ -27,6 +27,7 @@ export const getOptions = (
 		if (safe) {
 			return {}
 		}
+
 		throw new Error("Environment Variables are incorrect/missing!")
 	}
 
