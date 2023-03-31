@@ -2,7 +2,7 @@
 
 import styles from "./Settings.module.scss"
 
-import { FC, useCallback, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 
 import { Button, Card, Typography } from "@mui/joy"
 
@@ -15,15 +15,21 @@ import { RootPathSetting } from "./RootPathSetting"
 
 import type { Settings as DownloadSettings } from "@schemas/Settings"
 
-export const Settings: FC = () => {
-	const [settings, setSettings] = useState<Partial<DownloadSettings>>({})
-	const [savedSettings, setSavedSettings] = useState<
-		Partial<DownloadSettings> | false
-	>(false)
-	const { mutateAsync, data, isLoading, isError, error } =
-		trpc.saveSettings.useMutation()
+type PartialSettings = Partial<DownloadSettings>
 
-	const save = useCallback(() => {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const useSaveSettings = () => {
+	const trpcUtils = trpc.useContext()
+
+	const [settings, setSettings] = useState<PartialSettings>({})
+	const [savedSettings, setSavedSettings] = useState<PartialSettings | false>(
+		false,
+	)
+
+	const { mutateAsync, isError, isLoading, error } =
+		trpc.settings.save.useMutation()
+
+	const saveSettings = useCallback(() => {
 		const { qualityProfileId, rootPath } = settings
 		if (qualityProfileId && rootPath) {
 			mutateAsync({ qualityProfileId, rootPath }).then(() => {
@@ -32,11 +38,42 @@ export const Settings: FC = () => {
 		}
 	}, [mutateAsync, settings])
 
-	const success =
-		data === true &&
+	const savedSuccess =
+		isError === false &&
 		savedSettings !== false &&
 		savedSettings.qualityProfileId === settings.qualityProfileId &&
 		savedSettings.rootPath === settings.rootPath
+
+	// Fetch saved settings
+	useEffect(() => {
+		const req = trpcUtils.settings.get.fetch()
+		req.then((savedSettings) => {
+			setSettings(savedSettings)
+			setSavedSettings(savedSettings)
+		}).catch((error) => {
+			console.error(error)
+		})
+	}, [setSavedSettings, trpcUtils])
+
+	return {
+		isSaving: isLoading,
+		savedSuccess,
+		saveError: error,
+		saveSettings,
+		setSettings,
+		settings,
+	}
+}
+
+export const Settings: FC = () => {
+	const {
+		isSaving,
+		savedSuccess,
+		saveError,
+		saveSettings,
+		setSettings,
+		settings,
+	} = useSaveSettings()
 
 	return (
 		<div className={`container ${styles.settings}`}>
@@ -44,21 +81,27 @@ export const Settings: FC = () => {
 				<Typography level="h2" fontSize="md">
 					Settings
 				</Typography>
-				<RootPathSetting setSettings={setSettings} />
-				<QualityProfileSetting setSettings={setSettings} />
+				<RootPathSetting
+					settings={settings}
+					setSettings={setSettings}
+				/>
+				<QualityProfileSetting
+					settings={settings}
+					setSettings={setSettings}
+				/>
 				<Button
 					disabled={
 						settings.qualityProfileId === undefined ||
 						settings.rootPath === undefined ||
-						success
+						savedSuccess
 					}
-					color={success ? "success" : undefined}
-					loading={isLoading}
-					onClick={save}
+					color={savedSuccess ? "success" : undefined}
+					loading={isSaving}
+					onClick={saveSettings}
 				>
-					{success ? "Saved Successfully " : "Save"}
+					{savedSuccess ? "Saved Successfully " : "Save"}
 				</Button>
-				{isError && <ErrorAlert error={error} />}
+				{saveError && <ErrorAlert error={saveError} />}
 			</Card>
 		</div>
 	)

@@ -11,8 +11,9 @@ import { Settings } from "@schemas/Settings"
 import type { Dispatch, FC, SetStateAction } from "react"
 
 export const RootPathSetting: FC<{
+	settings: Partial<Settings>
 	setSettings: Dispatch<SetStateAction<Partial<Settings>>>
-}> = ({ setSettings }) => {
+}> = ({ settings, setSettings }) => {
 	const { data, error, isLoading } = trpc.rootFolder.useQuery()
 
 	if (error) return <ErrorAlert error={error} />
@@ -21,7 +22,8 @@ export const RootPathSetting: FC<{
 		<SelectSetting
 			isLoading={isLoading}
 			title="Root Path"
-			setValue={(value): void =>
+			value={settings.rootPath}
+			onChange={(value): void =>
 				setSettings(
 					(settings) =>
 						({

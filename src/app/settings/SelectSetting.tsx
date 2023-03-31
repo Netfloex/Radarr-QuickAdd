@@ -5,14 +5,16 @@ import { FCC } from "@typings/FCC"
 export const SelectSetting: FCC<{
 	title: string
 	isLoading: boolean
-	setValue: (value: unknown) => void
-}> = ({ title, isLoading, children, setValue }) => {
+	value: unknown
+	onChange: (value: unknown) => void
+}> = ({ title, isLoading, value, onChange, children }) => {
 	return (
 		<FormControl>
 			<FormLabel>{title}</FormLabel>
 			<Select
-				placeholder={title}
-				onChange={(e, value): void => setValue(value)}
+				placeholder={isLoading ? "Loading..." : title}
+				value={value}
+				onChange={(e, value): void => onChange(value)}
 			>
 				{isLoading ? (
 					<CircularProgress sx={{ alignSelf: "center" }} />

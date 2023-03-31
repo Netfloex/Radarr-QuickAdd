@@ -11,8 +11,9 @@ import { Settings } from "@schemas/Settings"
 import type { Dispatch, FC, SetStateAction } from "react"
 
 export const QualityProfileSetting: FC<{
+	settings: Partial<Settings>
 	setSettings: Dispatch<SetStateAction<Partial<Settings>>>
-}> = ({ setSettings }) => {
+}> = ({ settings, setSettings }) => {
 	const { data, error, isLoading } = trpc.qualityProfiles.useQuery()
 
 	if (error) return <ErrorAlert error={error} />
@@ -21,7 +22,8 @@ export const QualityProfileSetting: FC<{
 		<SelectSetting
 			isLoading={isLoading}
 			title="Quality Profile"
-			setValue={(value): void =>
+			value={settings.qualityProfileId}
+			onChange={(value): void =>
 				setSettings(
 					(settings) =>
 						({
