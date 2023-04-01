@@ -7,8 +7,6 @@ import {
 const parsedOptions = () => {
 	const options: Partial<EnvironmentOptionsInput> = {
 		apiKey: process.env.API_KEY,
-		qualityProfile: process.env.QUALITY_PROFILE_ID,
-		rootFolder: process.env.ROOT_FOLDER,
 		serverUrl: process.env.SERVER_URL,
 		storePath: process.env.STORE_PATH,
 	}

@@ -14,6 +14,8 @@ import { MovieSearchResult } from "@schemas/MovieSearchResult"
 
 import type { FC } from "react"
 
+import { DownloadMovieError } from "@typings/DownloadMovieError"
+
 export const DownloadButton: FC<{
 	movie: MovieSearchResult
 }> = ({ movie }) => {
@@ -31,13 +33,17 @@ export const DownloadButton: FC<{
 	}
 
 	if (data !== undefined) {
-		if (data === false) {
+		if (typeof data === "number") {
 			return (
 				<Alert
 					color="warning"
 					startDecorator={<SvgIcon component={MdWarning} />}
 				>
-					Only found rejected releases
+					{data === DownloadMovieError.invalidSettings
+						? "Please check your settings"
+						: data === DownloadMovieError.rejectedOnly
+						? "Only found rejected releases"
+						: "Unknown Error"}
 				</Alert>
 			)
 		} else {

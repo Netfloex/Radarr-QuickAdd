@@ -1,4 +1,6 @@
-import { getOptions } from "@server/utils/getOptions"
+import { ZodError } from "zod"
+
+import { getSettings } from "@server/utils/getSettings"
 
 import { http } from "@api/http"
 
@@ -7,8 +9,15 @@ interface AddMovieOptions {
 	title: string
 }
 
-export const addMovie = async (movie: AddMovieOptions): Promise<number> => {
-	const options = getOptions()
+export const addMovie = async (
+	movie: AddMovieOptions,
+): Promise<number | false> => {
+	const settings = await getSettings()
+
+	if (settings instanceof ZodError) {
+		return false
+	}
+
 	const data: { id: number } = await http
 		.post("movie", {
 			json: {
@@ -16,8 +25,8 @@ export const addMovie = async (movie: AddMovieOptions): Promise<number> => {
 					monitor: "none",
 					searchForMovie: false,
 				},
-				qualityProfileId: options.qualityProfile,
-				rootFolderPath: options.rootFolder,
+				qualityProfileId: settings.qualityProfileId,
+				rootFolderPath: settings.rootPath,
 				monitored: false,
 				...movie,
 			},
