@@ -47,13 +47,21 @@ export const useSaveSettings = () => {
 
 	// Fetch saved settings
 	useEffect(() => {
-		const req = trpcUtils.settings.get.fetch()
-		req.then((savedSettings) => {
-			setSettings(savedSettings)
-			setSavedSettings(savedSettings)
-		}).catch((error) => {
-			console.error(error)
-		})
+		const { abort, signal } = new AbortController()
+
+		trpcUtils.settings.get
+			.fetch(undefined, {
+				signal,
+			})
+			.then((savedSettings) => {
+				setSettings(savedSettings)
+				setSavedSettings(savedSettings)
+			})
+			.catch((error) => {
+				console.error(error)
+			})
+
+		return abort
 	}, [setSavedSettings, trpcUtils])
 
 	return {
