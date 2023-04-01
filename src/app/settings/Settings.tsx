@@ -110,7 +110,9 @@ export const Settings: FC = () => {
 				>
 					{savedSuccess ? "Saved Successfully " : "Save"}
 				</Button>
-				{saveError && <ErrorAlert error={saveError} />}
+				{saveError && (
+					<ErrorAlert error={saveError} what="save settings" />
+				)}
 			</Card>
 		</div>
 	)

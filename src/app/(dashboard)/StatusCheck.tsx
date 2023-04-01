@@ -5,6 +5,8 @@ import { Alert, CircularProgress, SvgIcon, Typography } from "@mui/joy"
 
 import { trpc } from "@utils/trpc"
 
+import { ErrorAlert } from "@components/ErrorAlert"
+
 import { HealthCheckErrorType } from "@typings/HealthCheckErrors"
 
 export const StatusCheck: FC = () => {
@@ -20,8 +22,7 @@ export const StatusCheck: FC = () => {
 
 	if (error) {
 		console.error(error)
-
-		return <>{error.message}</>
+		return <ErrorAlert error={error} what="healthcheck" />
 	}
 
 	if (!data.error) {

@@ -17,7 +17,7 @@ export const Results: FC<{ query: string }> = ({ query }) => {
 	)
 
 	// Error
-	if (error) return <ErrorAlert error={error} />
+	if (error) return <ErrorAlert error={error} what="results" />
 
 	// Loading
 	if (isInitialLoading)

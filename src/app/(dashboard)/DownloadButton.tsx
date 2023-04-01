@@ -29,7 +29,7 @@ export const DownloadButton: FC<{
 		trpc.downloadMovie.useQuery(options, { enabled: false })
 
 	if (isError) {
-		return <ErrorAlert error={error} />
+		return <ErrorAlert error={error} what={"the download"} />
 	}
 
 	if (data !== undefined) {

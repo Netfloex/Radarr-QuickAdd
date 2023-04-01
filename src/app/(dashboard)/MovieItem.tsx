@@ -14,6 +14,8 @@ import {
 
 import { trpc } from "@utils/trpc"
 
+import { ErrorAlert } from "@components/ErrorAlert"
+
 import { DownloadButton } from "./DownloadButton"
 import { MovieStatus } from "./MovieStatus"
 
@@ -24,9 +26,12 @@ import type { FC } from "react"
 import { FoundQueueItem } from "@typings/FoundQueueItem"
 
 export const MovieItem: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
-	const { data, isError, isLoading } = trpc.queueDetails.useQuery(undefined, {
-		refetchOnWindowFocus: true,
-	})
+	const { data, isError, error, isLoading } = trpc.queueDetails.useQuery(
+		undefined,
+		{
+			refetchOnWindowFocus: true,
+		},
+	)
 
 	const queueItem: FoundQueueItem = isLoading
 		? null
@@ -64,7 +69,7 @@ export const MovieItem: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 				) : (
 					<DownloadButton movie={movie} />
 				)}
-				{isError && <>An error occurred fetching the queue</>}
+				{isError && <ErrorAlert error={error} what="queue details" />}
 			</CardContent>
 		</Card>
 	)

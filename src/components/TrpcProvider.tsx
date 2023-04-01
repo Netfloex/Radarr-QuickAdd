@@ -16,9 +16,9 @@ export const TrpcProvider: FCC = ({ children }) => {
 					queries: {
 						refetchOnWindowFocus: false,
 						retry(failureCount, error): boolean {
+							if (failureCount > 2) return false
 							return !(
-								error instanceof TRPCClientError &&
-								error.data?.httpStatus
+								error instanceof TRPCClientError && error.data
 							)
 						},
 					},

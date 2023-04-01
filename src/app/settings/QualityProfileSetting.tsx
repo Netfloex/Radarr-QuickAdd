@@ -16,7 +16,7 @@ export const QualityProfileSetting: FC<{
 }> = ({ settings, setSettings }) => {
 	const { data, error, isLoading } = trpc.qualityProfiles.useQuery()
 
-	if (error) return <ErrorAlert error={error} />
+	if (error) return <ErrorAlert error={error} what="quality profiles" />
 
 	return (
 		<SelectSetting

@@ -16,7 +16,7 @@ export const RootFolderSetting: FC<{
 }> = ({ settings, setSettings }) => {
 	const { data, error, isLoading } = trpc.rootFolder.useQuery()
 
-	if (error) return <ErrorAlert error={error} />
+	if (error) return <ErrorAlert error={error} what="root folders" />
 
 	return (
 		<SelectSetting
