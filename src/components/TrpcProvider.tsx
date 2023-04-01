@@ -1,7 +1,7 @@
 "use client"
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { httpBatchLink, loggerLink } from "@trpc/client"
+import { TRPCClientError, httpBatchLink, loggerLink } from "@trpc/client"
 
 import { useConstant } from "@utils/hooks/useConstant"
 import { trpc } from "@utils/trpc"
@@ -15,6 +15,12 @@ export const TrpcProvider: FCC = ({ children }) => {
 				defaultOptions: {
 					queries: {
 						refetchOnWindowFocus: false,
+						retry(failureCount, error): boolean {
+							return !(
+								error instanceof TRPCClientError &&
+								error.data?.httpStatus
+							)
+						},
 					},
 				},
 			}),
