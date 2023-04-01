@@ -26,7 +26,7 @@ export const addMovie = async (
 					searchForMovie: false,
 				},
 				qualityProfileId: settings.qualityProfileId,
-				rootFolderPath: settings.rootPath,
+				rootFolderPath: settings.rootFolder,
 				monitored: false,
 				...movie,
 			},

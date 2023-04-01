@@ -11,7 +11,7 @@ import { trpc } from "@utils/trpc"
 import { ErrorAlert } from "@components/ErrorAlert"
 
 import { QualityProfileSetting } from "./QualityProfileSetting"
-import { RootPathSetting } from "./RootPathSetting"
+import { RootFolderSetting } from "./RootFolderSetting"
 
 import type { Settings as DownloadSettings } from "@schemas/Settings"
 
@@ -30,10 +30,10 @@ export const useSaveSettings = () => {
 		trpc.settings.save.useMutation()
 
 	const saveSettings = useCallback(() => {
-		const { qualityProfileId, rootPath } = settings
+		const { qualityProfileId, rootFolder } = settings
 
-		if (qualityProfileId && rootPath) {
-			mutateAsync({ qualityProfileId, rootPath }).then(() => {
+		if (qualityProfileId && rootFolder) {
+			mutateAsync({ qualityProfileId, rootFolder }).then(() => {
 				setSavedSettings(settings)
 			})
 		}
@@ -43,7 +43,7 @@ export const useSaveSettings = () => {
 		isError === false &&
 		savedSettings !== false &&
 		savedSettings.qualityProfileId === settings.qualityProfileId &&
-		savedSettings.rootPath === settings.rootPath
+		savedSettings.rootFolder === settings.rootFolder
 
 	// Fetch saved settings
 	useEffect(() => {
@@ -82,7 +82,7 @@ export const Settings: FC = () => {
 				<Typography level="h2" fontSize="md">
 					Settings
 				</Typography>
-				<RootPathSetting
+				<RootFolderSetting
 					settings={settings}
 					setSettings={setSettings}
 				/>
@@ -93,7 +93,7 @@ export const Settings: FC = () => {
 				<Button
 					disabled={
 						settings.qualityProfileId === undefined ||
-						settings.rootPath === undefined ||
+						settings.rootFolder === undefined ||
 						savedSuccess
 					}
 					color={savedSuccess ? "success" : undefined}

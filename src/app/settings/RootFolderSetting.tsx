@@ -10,7 +10,7 @@ import { Settings } from "@schemas/Settings"
 
 import type { Dispatch, FC, SetStateAction } from "react"
 
-export const RootPathSetting: FC<{
+export const RootFolderSetting: FC<{
 	settings: Partial<Settings>
 	setSettings: Dispatch<SetStateAction<Partial<Settings>>>
 }> = ({ settings, setSettings }) => {
@@ -21,14 +21,14 @@ export const RootPathSetting: FC<{
 	return (
 		<SelectSetting
 			isLoading={isLoading}
-			title="Root Path"
-			value={settings.rootPath}
+			title="Root Folder"
+			value={settings.rootFolder}
 			onChange={(value): void =>
 				setSettings(
 					(settings) =>
 						({
 							...settings,
-							rootPath: value as string,
+							rootFolder: value as string,
 						} satisfies Partial<Settings>),
 				)
 			}

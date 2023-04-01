@@ -9,7 +9,7 @@ export const settingsRouter = router({
 
 		store.data.qualityProfileId = input.qualityProfileId
 
-		store.data.rootPath = input.rootPath
+		store.data.rootFolder = input.rootFolder
 
 		await store.write()
 
@@ -20,7 +20,7 @@ export const settingsRouter = router({
 
 		return {
 			qualityProfileId: store.data.qualityProfileId,
-			rootPath: store.data.rootPath,
+			rootFolder: store.data.rootFolder,
 		} satisfies Partial<Settings>
 	}),
 })
