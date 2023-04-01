@@ -1,10 +1,11 @@
+import { FC } from "react"
 import { MdError } from "react-icons/md"
 
 import { Alert, CircularProgress, SvgIcon, Typography } from "@mui/joy"
 
 import { trpc } from "@utils/trpc"
 
-import type { FC } from "react"
+import { HealthCheckErrorType } from "@typings/HealthCheckErrors"
 
 export const StatusCheck: FC = () => {
 	const { data, error, isLoading } = trpc.healthcheck.useQuery()
@@ -23,22 +24,8 @@ export const StatusCheck: FC = () => {
 		return <>{error.message}</>
 	}
 
-	if (Array.isArray(data)) {
+	if (!data.error) {
 		return null
-	}
-
-	let errorMessage = "Unknown Error"
-
-	if ("status" in data) {
-		if (data.status == 401) {
-			errorMessage = "Api key is incorrect"
-		} else {
-			errorMessage = `Request failed with status ${data.status}`
-		}
-	} else if ("code" in data) {
-		errorMessage = `Request failed: ${data.code}`
-	} else if (data.incorrectEnv) {
-		errorMessage = `The environment variables are incorrect/missing`
 	}
 
 	return (
@@ -47,9 +34,32 @@ export const StatusCheck: FC = () => {
 				startDecorator={<SvgIcon component={MdError} />}
 				color="danger"
 			>
-				<Typography>{errorMessage}</Typography>
+				<Typography>
+					<Typography display="block">
+						{data.type === HealthCheckErrorType.requestError
+							? "Could not contact SERVER_URL"
+							: data.message}
+					</Typography>
+					{"zodError" in data &&
+						data.formatted.map((error) => (
+							<Typography
+								key={error}
+								level="body2"
+								display="block"
+							>
+								{error}
+							</Typography>
+						))}
+					{data.type === HealthCheckErrorType.responseError && (
+						<Typography level="body2">
+							<pre>{data.body}</pre>
+						</Typography>
+					)}
+					{data.type === HealthCheckErrorType.requestError && (
+						<Typography level="body2">{data.message}</Typography>
+					)}
+				</Typography>
 			</Alert>
-			{"body" in data && <pre>{data.body}</pre>}
 		</>
 	)
 }

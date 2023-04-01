@@ -1,34 +1,46 @@
 import { RequestError } from "got"
+import { ZodError } from "zod"
 
 import { procedure } from "@server/trpc"
-import { hasOptions } from "@server/utils/getOptions"
+import { formatZodError } from "@server/utils/formatZodError"
+import { parsedOptions } from "@server/utils/getOptions"
+import { getSettings } from "@server/utils/getSettings"
 
 import { HealthCheck, healthCheck } from "@api/healthCheck"
 
-interface ResponseError {
-	status: number
-	body: string
-}
-
-interface HttpError {
-	code: string
-	url?: string
-}
-
-interface UnknownError {
-	code: "Unknown Error"
-}
-
-interface IncorrectEnvError {
-	incorrectEnv: true
-}
+import {
+	HealthCheckError,
+	HealthCheckErrorType,
+} from "@typings/HealthCheckErrors"
 
 const healthcheckResolver = async (): Promise<
-	HealthCheck | ResponseError | HttpError | UnknownError | IncorrectEnvError
+	| {
+			data: HealthCheck
+			error: false
+	  }
+	| HealthCheckError
 > => {
-	if (!hasOptions()) {
+	const options = parsedOptions()
+
+	if (!options.success) {
 		return {
-			incorrectEnv: true,
+			type: HealthCheckErrorType.incorrectEnv,
+			zodError: options.error,
+			message: "Incorrect/Missing environment variables",
+			formatted: formatZodError(options.error),
+			error: true,
+		}
+	}
+
+	const settings = await getSettings()
+
+	if (settings instanceof ZodError) {
+		return {
+			type: HealthCheckErrorType.incorrectSettings,
+			zodError: settings,
+			message: "Incorrect/Missing settings",
+			formatted: formatZodError(settings),
+			error: true,
 		}
 	}
 
@@ -36,27 +48,41 @@ const healthcheckResolver = async (): Promise<
 		const data = await healthCheck()
 
 		if (data.statusCode !== 200) {
-			const error: ResponseError = {
-				status: data.statusCode,
-				body: JSON.stringify(data.body),
+			if (data.statusCode === 401) {
+				return {
+					type: HealthCheckErrorType.responseError,
+					message: `Incorrect API key`,
+					status: data.statusCode,
+					body: data.body,
+					error: true,
+				}
 			}
 
-			return error
+			return {
+				type: HealthCheckErrorType.responseError,
+				message: `Request to Radarr failed with status ${data.statusCode}`,
+				status: data.statusCode,
+				body: data.body,
+				error: true,
+			}
 		}
 
-		return data.body
+		return { data: data.body, error: false }
 	} catch (error) {
 		if (error instanceof RequestError) {
-			const response: HttpError = {
-				code: error.code,
-				url: error.options.url?.toString(),
+			return {
+				type: HealthCheckErrorType.requestError,
+				message: error.message,
+				error: true,
 			}
-
-			return response
 		}
 
 		console.error(error)
-		return { code: "Unknown Error" } as const
+		return {
+			type: HealthCheckErrorType.unknownError,
+			message: String(error),
+			error: true,
+		}
 	}
 }
 

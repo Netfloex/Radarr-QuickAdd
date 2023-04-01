@@ -4,7 +4,7 @@ import {
 } from "@schemas/EnvironmentOptions"
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const parsedOptions = () => {
+export const parsedOptions = () => {
 	const options: Partial<EnvironmentOptionsInput> = {
 		apiKey: process.env.API_KEY,
 		serverUrl: process.env.SERVER_URL,
@@ -30,10 +30,4 @@ export const getOptions = (
 	}
 
 	return parsed.data
-}
-
-export const hasOptions = (): boolean => {
-	const parsed = parsedOptions()
-
-	return parsed.success
 }
