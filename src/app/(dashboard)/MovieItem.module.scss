@@ -1,5 +1,11 @@
 .movieItem {
 	width: 100%;
+	padding-right: 0;
+	padding-left: 0;
+
+	.overflow {
+		margin-left: unset;
+	}
 
 	.poster {
 		width: 10rem;

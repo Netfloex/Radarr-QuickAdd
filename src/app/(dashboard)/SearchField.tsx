@@ -1,5 +1,3 @@
-import styles from "./SearchField.module.scss"
-
 import { Input } from "@components/joy"
 
 import type { FC } from "react"
@@ -7,9 +5,10 @@ import type { FC } from "react"
 export const SearchField: FC<{
 	defaultValue: string
 	onChange: (value: string) => void
-}> = ({ defaultValue, onChange }) => {
+	className?: string
+}> = ({ defaultValue, onChange, className }) => {
 	return (
-		<div className={styles.searchField}>
+		<div className={className}>
 			<Input
 				type="text"
 				autoFocus

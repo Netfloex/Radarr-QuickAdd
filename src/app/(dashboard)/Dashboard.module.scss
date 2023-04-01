@@ -1,0 +1,15 @@
+.topBar {
+	display: flex;
+	align-items: center;
+	padding-top: 1rem;
+	gap: 1rem;
+
+	.searchBar {
+		flex: 1;
+	}
+}
+
+.content{
+	padding-top: 1rem;
+}
+

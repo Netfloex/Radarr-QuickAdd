@@ -1,10 +1,12 @@
-import { MovieItem } from "src/app/(dashboard)/MovieItem"
+import styles from "./Results.module.scss"
 
 import { CircularProgress, List, ListItem } from "@mui/joy"
 
 import { trpc } from "@utils/trpc"
 
 import { ErrorAlert } from "@components/ErrorAlert"
+
+import { MovieItem } from "./MovieItem"
 
 import type { FC } from "react"
 
@@ -18,7 +20,12 @@ export const Results: FC<{ query: string }> = ({ query }) => {
 	if (error) return <ErrorAlert error={error} />
 
 	// Loading
-	if (isInitialLoading) return <CircularProgress />
+	if (isInitialLoading)
+		return (
+			<div className={styles.loading}>
+				<CircularProgress variant="soft" color="neutral" />
+			</div>
+		)
 
 	// Not started
 	if (isLoading) return null
@@ -28,9 +35,9 @@ export const Results: FC<{ query: string }> = ({ query }) => {
 
 	// data
 	return (
-		<List>
+		<List sx={{ paddingY: 0 }}>
 			{data.map((movie) => (
-				<ListItem key={movie.tmdbId}>
+				<ListItem sx={{ paddingX: 0 }} key={movie.tmdbId}>
 					<MovieItem movie={movie} />
 				</ListItem>
 			))}

@@ -1,8 +1,10 @@
 "use client"
 
-import Link from "next/link"
+import styles from "./Dashboard.module.scss"
+
 import { useSearchParams } from "next/navigation"
 import { useCallback, useState } from "react"
+import { SettingsButton } from "src/app/(dashboard)/SettingsButtton"
 import { useDebouncedCallback } from "use-debounce"
 
 import { Results } from "./Results"
@@ -28,13 +30,18 @@ export const Dashboard: FC = () => {
 
 	return (
 		<div className="container">
-			<SearchField
-				defaultValue={queryParam}
-				onChange={onSearchChangeDebounced}
-			/>
-			<Link href="/settings">Settings</Link>
-			<StatusCheck />
-			<Results query={query} />
+			<div className={styles.topBar}>
+				<SearchField
+					defaultValue={queryParam}
+					onChange={onSearchChangeDebounced}
+					className={styles.searchBar}
+				/>
+				<SettingsButton />
+			</div>
+			<div className={styles.content}>
+				<StatusCheck />
+				<Results query={query} />
+			</div>
 		</div>
 	)
 }

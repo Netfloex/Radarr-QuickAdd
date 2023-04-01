@@ -34,7 +34,7 @@ export const MovieItem: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 
 	return (
 		<Card orientation="horizontal" className={styles.movieItem}>
-			<CardOverflow>
+			<CardOverflow className={styles.overflow}>
 				<AspectRatio ratio={2 / 3} className={styles.poster}>
 					{movie.remotePoster && (
 						<Image
