@@ -1,6 +1,7 @@
 import styles from "./DownloadButton.module.scss"
 
 import { filesize } from "filesize"
+import { FC, useCallback } from "react"
 import { MdCheck, MdWarning } from "react-icons/md"
 
 import { Alert, Button, Chip, SvgIcon } from "@mui/joy"
@@ -12,21 +13,22 @@ import { ErrorAlert } from "@components/ErrorAlert"
 import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
 
-import type { FC } from "react"
-
 import { DownloadMovieError } from "@typings/DownloadMovieError"
 
 export const DownloadButton: FC<{
 	movie: MovieSearchResult
 }> = ({ movie }) => {
-	const options: DownloadMovieBody = {
-		id: movie.id,
-		title: movie.title,
-		tmdbId: movie.tmdbId,
-	}
+	const { mutate, isError, data, error, isLoading } =
+		trpc.downloadMovie.useMutation()
 
-	const { isInitialLoading, isError, data, error, refetch } =
-		trpc.downloadMovie.useQuery(options, { enabled: false })
+	const download = useCallback(() => {
+		const options: DownloadMovieBody = {
+			id: movie.id,
+			title: movie.title,
+			tmdbId: movie.tmdbId,
+		}
+		mutate(options)
+	}, [movie, mutate])
 
 	if (isError) {
 		return <ErrorAlert error={error} what={"the download"} />
@@ -71,8 +73,8 @@ export const DownloadButton: FC<{
 		<>
 			<Button
 				disabled={movie.hasFile || data !== undefined}
-				onClick={(): void => void refetch()}
-				loading={isInitialLoading}
+				onClick={download}
+				loading={isLoading}
 				color={data !== undefined ? "success" : undefined}
 				className={styles.downloadButton}
 			>
