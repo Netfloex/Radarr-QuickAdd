@@ -1,9 +1,16 @@
 import { z } from "zod"
 
-export const DownloadMovieBody = z.object({
+const UnaddedDownloadMovieBody = z.object({
 	title: z.string(),
 	tmdbId: z.number(),
-	id: z.number().optional(),
 })
+
+export const DownloadMovieBody = z.union([
+	UnaddedDownloadMovieBody.extend({
+		id: z.number(),
+		path: z.string(),
+	}),
+	UnaddedDownloadMovieBody,
+])
 
 export type DownloadMovieBody = z.output<typeof DownloadMovieBody>

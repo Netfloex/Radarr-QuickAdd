@@ -3,45 +3,57 @@ import { filesize } from "filesize"
 
 import { addMovie } from "@api/addMovie"
 import { downloadRelease } from "@api/downloadRelease"
+import { editMovie } from "@api/editMovie"
 import { getReleases } from "@api/getReleases"
 
-import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
-import { Release } from "@schemas/Release"
+import type { DownloadMovieBody } from "@schemas/DownloadMovieBody"
+import type { Release } from "@schemas/Release"
 
 import { DownloadMovieError } from "@typings/DownloadMovieError"
 
 export const downloadMovie = async (
 	movie: DownloadMovieBody,
 ): Promise<Release | DownloadMovieError> => {
-	if (!movie.id) {
+	let movieId = "id" in movie ? movie.id : false
+
+	if (!("id" in movie)) {
 		console.log(chk`{yellow Adding movie {dim ${movie.title}}...}`)
 
-		const id = await addMovie({
+		movieId = await addMovie({
 			title: movie.title,
 			tmdbId: movie.tmdbId,
 		})
 
-		if (id == false) {
+		if (movieId == false) {
 			console.log(chk`{red Failed to add, incorrect settings}`)
 
 			return DownloadMovieError.invalidSettings
 		}
+	} else {
+		console.log(chk`Movie {dim ${movie.title}} is already added`)
 
-		movie.id = id
+		console.log(
+			chk`{yellow Editing ${movie.title} to ensure correct quality}`,
+		)
+		await editMovie({ id: movie.id, path: movie.path })
+	}
+
+	if (movieId === false) {
+		throw new Error("Movie Id should not be false")
 	}
 
 	console.log(chk`Searching releases for {dim ${movie.title}} ...`)
-	const releases = await getReleases(movie.id)
+	const releases = await getReleases(movieId)
 
-	const unrejected = releases.filter((release) => !release.rejected)
+	const unRejected = releases.filter((release) => !release.rejected)
 
-	if (!unrejected.length) {
+	if (!unRejected.length) {
 		console.log(chk`Movie: {dim ${movie.title}} only has rejected releases`)
 
 		return DownloadMovieError.rejectedOnly
 	}
 
-	const best = unrejected.reduce((prev, cur) =>
+	const best = unRejected.reduce((prev, cur) =>
 		prev.seeders > cur.seeders ? prev : cur,
 	)
 

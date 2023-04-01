@@ -4,6 +4,8 @@ import { getSettings } from "@server/utils/getSettings"
 
 import { http } from "@api/http"
 
+import { AddMovieBody } from "@schemas/AddMovieBody"
+
 interface AddMovieOptions {
 	tmdbId: number
 	title: string
@@ -18,7 +20,7 @@ export const addMovie = async (
 		return false
 	}
 
-	const data: { id: number } = await http
+	const data = await http
 		.post("movie", {
 			json: {
 				addOptions: {
@@ -33,5 +35,11 @@ export const addMovie = async (
 		})
 		.json()
 
-	return data.id
+	const result = AddMovieBody.safeParse(data)
+
+	if (result.success) {
+		return result.data.id
+	}
+
+	throw result.error
 }

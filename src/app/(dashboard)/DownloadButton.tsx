@@ -10,7 +10,6 @@ import { trpc } from "@utils/trpc"
 
 import { ErrorAlert } from "@components/ErrorAlert"
 
-import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
 
 import { DownloadMovieError } from "@typings/DownloadMovieError"
@@ -22,12 +21,12 @@ export const DownloadButton: FC<{
 		trpc.downloadMovie.useMutation()
 
 	const download = useCallback(() => {
-		const options: DownloadMovieBody = {
-			id: movie.id,
+		mutate({
 			title: movie.title,
 			tmdbId: movie.tmdbId,
-		}
-		mutate(options)
+			id: "id" in movie ? movie.id : undefined,
+			path: "path" in movie ? movie.path : undefined,
+		})
 	}, [movie, mutate])
 
 	if (isError) {

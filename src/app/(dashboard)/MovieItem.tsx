@@ -26,15 +26,13 @@ import type { FC } from "react"
 import { FoundQueueItem } from "@typings/FoundQueueItem"
 
 export const MovieItem: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
-	const { data, isError, error, isLoading } = trpc.queueDetails.useQuery(
-		undefined,
-		{
-			refetchOnWindowFocus: true,
-		},
-	)
+	const { data, isError, error } = trpc.queueDetails.useQuery(undefined, {
+		refetchOnWindowFocus: true,
+		enabled: "id" in movie,
+	})
 
-	const queueItem: FoundQueueItem = isLoading
-		? null
+	const queueItem: FoundQueueItem = !("id" in movie)
+		? false
 		: data?.find((item) => item.movieId == movie.id) ?? false
 
 	return (
@@ -64,7 +62,7 @@ export const MovieItem: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 					</Typography>
 					<Typography>{movie.overview}</Typography>
 				</Typography>
-				{!!queueItem ? (
+				{queueItem !== false ? (
 					<MovieProgress queueStatus={queueItem} />
 				) : (
 					<DownloadButton movie={movie} />
