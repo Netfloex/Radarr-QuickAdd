@@ -47,11 +47,11 @@ export const useSaveSettings = () => {
 
 	// Fetch saved settings
 	useEffect(() => {
-		const { abort, signal } = new AbortController()
+		const ac = new AbortController()
 
 		trpcUtils.settings.get
 			.fetch(undefined, {
-				signal,
+				signal: ac.signal,
 			})
 			.then((savedSettings) => {
 				setSettings(savedSettings)
@@ -61,7 +61,9 @@ export const useSaveSettings = () => {
 				console.error(error)
 			})
 
-		return abort
+		return (): void => {
+			ac.abort()
+		}
 	}, [setSavedSettings, trpcUtils])
 
 	return {
