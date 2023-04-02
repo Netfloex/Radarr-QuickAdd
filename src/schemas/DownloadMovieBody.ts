@@ -9,6 +9,8 @@ export const DownloadMovieBody = z.union([
 	UnaddedDownloadMovieBody.extend({
 		id: z.number(),
 		path: z.string(),
+		qualityProfileId: z.number(),
+		monitored: z.boolean(),
 	}),
 	UnaddedDownloadMovieBody,
 ])

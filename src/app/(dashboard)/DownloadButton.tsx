@@ -26,6 +26,11 @@ export const DownloadButton: FC<{
 			tmdbId: movie.tmdbId,
 			id: "id" in movie ? movie.id : undefined,
 			path: "path" in movie ? movie.path : undefined,
+			monitored: "monitored" in movie ? movie.monitored : undefined,
+			qualityProfileId:
+				"qualityProfileId" in movie
+					? movie.qualityProfileId
+					: undefined,
 		})
 	}, [movie, mutate])
 

@@ -1,5 +1,8 @@
 import chk from "chalk-template"
 import { filesize } from "filesize"
+import { ZodError } from "zod"
+
+import { getSettings } from "@server/utils/getSettings"
 
 import { addMovie } from "@api/addMovie"
 import { downloadRelease } from "@api/downloadRelease"
@@ -14,6 +17,12 @@ import { DownloadMovieError } from "@typings/DownloadMovieError"
 export const downloadMovie = async (
 	movie: DownloadMovieBody,
 ): Promise<Release | DownloadMovieError> => {
+	const settings = await getSettings()
+
+	if (settings instanceof ZodError) {
+		return DownloadMovieError.invalidSettings
+	}
+
 	let movieId = "id" in movie ? movie.id : false
 
 	if (!("id" in movie)) {
@@ -32,10 +41,15 @@ export const downloadMovie = async (
 	} else {
 		console.log(chk`Movie {dim ${movie.title}} is already added`)
 
-		console.log(
-			chk`{yellow Editing ${movie.title} to ensure correct quality}`,
-		)
-		await editMovie({ id: movie.id, path: movie.path })
+		if (
+			movie.qualityProfileId !== settings.qualityProfileId ||
+			movie.monitored
+		) {
+			console.log(
+				chk`{yellow Editing ${movie.title}, incorrect quality or is monitored}`,
+			)
+			await editMovie({ id: movie.id, path: movie.path })
+		}
 	}
 
 	if (movieId === false) {
