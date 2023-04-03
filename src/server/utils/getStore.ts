@@ -1,9 +1,9 @@
 import { Store } from "@server/lib/Store"
 import { getOptions } from "@server/utils/getOptions"
 
-import { Settings } from "@schemas/Settings"
+import type { SettingsOutput } from "@schemas/Settings"
 
-type StoreType = Store<Partial<Settings>>
+type StoreType = Store<Partial<SettingsOutput>>
 
 let savedStore: StoreType | false = false
 
@@ -12,7 +12,7 @@ export const getStore = async (): Promise<StoreType> => {
 
 	const { storePath } = getOptions()
 
-	const store = new Store<Partial<Settings>>(storePath, {})
+	const store = new Store<Partial<SettingsOutput>>(storePath, {})
 
 	await store.init()
 

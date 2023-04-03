@@ -6,13 +6,13 @@ import { ErrorAlert } from "@components/ErrorAlert"
 
 import { SelectSetting } from "./SelectSetting"
 
-import { Settings } from "@schemas/Settings"
+import { SettingsInput } from "@schemas/Settings"
 
 import type { Dispatch, FC, SetStateAction } from "react"
 
 export const RootFolderSetting: FC<{
-	settings: Partial<Settings>
-	setSettings: Dispatch<SetStateAction<Partial<Settings>>>
+	settings: Partial<SettingsInput>
+	setSettings: Dispatch<SetStateAction<Partial<SettingsInput>>>
 }> = ({ settings, setSettings }) => {
 	const { data, error, isLoading } = trpc.rootFolder.useQuery()
 
@@ -24,13 +24,10 @@ export const RootFolderSetting: FC<{
 			title="Root Folder"
 			value={settings.rootFolder}
 			onChange={(value): void =>
-				setSettings(
-					(settings) =>
-						({
-							...settings,
-							rootFolder: value as string,
-						} satisfies Partial<Settings>),
-				)
+				setSettings((settings) => ({
+					...settings,
+					rootFolder: value as string,
+				}))
 			}
 		>
 			{data?.map((folder) => (

@@ -24,7 +24,7 @@ export const editMovie = async (movie: EditMovieOptions): Promise<unknown> => {
 				id: movie.id,
 				path: movie.path,
 				qualityProfileId: settings.qualityProfileId,
-				monitored: false,
+				monitored: settings.monitor,
 			} satisfies Partial<MovieSearchResult>,
 		})
 		.json()

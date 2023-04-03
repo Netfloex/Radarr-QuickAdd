@@ -7,9 +7,7 @@ export const settingsRouter = router({
 	save: procedure.input(Settings).mutation(async ({ input }) => {
 		const store = await getStore()
 
-		store.data.qualityProfileId = input.qualityProfileId
-
-		store.data.rootFolder = input.rootFolder
+		store.data = input
 
 		await store.write()
 
@@ -17,10 +15,8 @@ export const settingsRouter = router({
 	}),
 	get: procedure.query(async () => {
 		const store = await getStore()
+		await store.read()
 
-		return {
-			qualityProfileId: store.data.qualityProfileId,
-			rootFolder: store.data.rootFolder,
-		} satisfies Partial<Settings>
+		return store.data
 	}),
 })

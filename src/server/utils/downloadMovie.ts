@@ -43,7 +43,7 @@ export const downloadMovie = async (
 
 		if (
 			movie.qualityProfileId !== settings.qualityProfileId ||
-			movie.monitored
+			movie.monitored !== settings.monitor
 		) {
 			console.log(
 				chk`{yellow Editing ${movie.title}, incorrect quality or is monitored}`,

@@ -2,7 +2,9 @@
 
 import styles from "./Settings.module.scss"
 
+import equal from "fast-deep-equal"
 import { FC, useCallback, useEffect, useState } from "react"
+import { MonitorSetting } from "src/app/settings/MonitorSettings"
 
 import { Button, Card, Typography } from "@mui/joy"
 
@@ -13,9 +15,9 @@ import { ErrorAlert } from "@components/ErrorAlert"
 import { QualityProfileSetting } from "./QualityProfileSetting"
 import { RootFolderSetting } from "./RootFolderSetting"
 
-import type { Settings as DownloadSettings } from "@schemas/Settings"
+import type { SettingsInput } from "@schemas/Settings"
 
-type PartialSettings = Partial<DownloadSettings>
+type PartialSettings = Partial<SettingsInput>
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const useSaveSettings = () => {
@@ -30,20 +32,16 @@ export const useSaveSettings = () => {
 		trpc.settings.save.useMutation()
 
 	const saveSettings = useCallback(() => {
-		const { qualityProfileId, rootFolder } = settings
-
-		if (qualityProfileId && rootFolder) {
-			mutateAsync({ qualityProfileId, rootFolder }).then(() => {
-				setSavedSettings(settings)
-			})
-		}
+		mutateAsync(settings as SettingsInput).then(() => {
+			setSavedSettings(settings)
+		})
 	}, [mutateAsync, settings])
 
 	const savedSuccess =
 		isError === false &&
 		savedSettings !== false &&
-		savedSettings.qualityProfileId === settings.qualityProfileId &&
-		savedSettings.rootFolder === settings.rootFolder
+		Object.keys(savedSettings).length !== 0 &&
+		equal(savedSettings, settings)
 
 	// Fetch saved settings
 	useEffect(() => {
@@ -88,7 +86,7 @@ export const Settings: FC = () => {
 
 	return (
 		<div className={`container ${styles.settings}`}>
-			<Card>
+			<Card className={styles.card}>
 				<Typography level="h2" fontSize="md">
 					Settings
 				</Typography>
@@ -100,6 +98,7 @@ export const Settings: FC = () => {
 					settings={settings}
 					setSettings={setSettings}
 				/>
+				<MonitorSetting settings={settings} setSettings={setSettings} />
 				<Button
 					disabled={
 						settings.qualityProfileId === undefined ||
