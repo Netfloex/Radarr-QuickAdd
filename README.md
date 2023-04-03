@@ -22,6 +22,6 @@ services:
         environment:
             SERVER_URL: http://radarr # As accessible by this container
             API_KEY: radarrapikeyradarrapikey
-            ROOT_FOLDER: /media # The root folder for media for Radarr
-            QUALITY_PROFILE_ID: 4 # Quality profile id
+		volumes:
+			- ./data:/app/data
 ```
