@@ -31,13 +31,10 @@ export const downloadMovie = async (
 		movieId = await addMovie({
 			title: movie.title,
 			tmdbId: movie.tmdbId,
+			qualityProfileId: settings.qualityProfileId,
+			rootFolderPath: settings.rootFolder,
+			monitored: settings.monitor,
 		})
-
-		if (movieId == false) {
-			console.log(chk`{red Failed to add, incorrect settings}`)
-
-			return DownloadMovieError.invalidSettings
-		}
 	} else {
 		console.log(chk`Movie {dim ${movie.title}} is already added`)
 
@@ -48,7 +45,12 @@ export const downloadMovie = async (
 			console.log(
 				chk`{yellow Editing ${movie.title}, incorrect quality or is monitored}`,
 			)
-			await editMovie({ id: movie.id, path: movie.path })
+			await editMovie({
+				id: movie.id,
+				path: movie.path,
+				monitored: settings.monitor,
+				qualityProfileId: settings.qualityProfileId,
+			})
 		}
 	}
 

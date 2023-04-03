@@ -1,31 +1,22 @@
 import { ZodError } from "zod"
 
-import { getSettings } from "@server/utils/getSettings"
-
 import { http } from "@api/http"
 
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
 
-interface EditMovieOptions {
+interface EditMovieRequiredOptions {
 	id: number
 	path: string
 }
 
-export const editMovie = async (movie: EditMovieOptions): Promise<unknown> => {
-	const settings = await getSettings()
+type EditMovieOptions = EditMovieRequiredOptions & Partial<MovieSearchResult>
 
-	if (settings instanceof ZodError) {
-		return false
-	}
-
+export const editMovie = async (
+	movie: EditMovieOptions,
+): Promise<MovieSearchResult | ZodError<MovieSearchResult>> => {
 	const data = await http
 		.put("movie", {
-			json: {
-				id: movie.id,
-				path: movie.path,
-				qualityProfileId: settings.qualityProfileId,
-				monitored: settings.monitor,
-			} satisfies Partial<MovieSearchResult>,
+			json: movie,
 		})
 		.json()
 
