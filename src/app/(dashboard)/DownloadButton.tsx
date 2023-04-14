@@ -12,7 +12,9 @@ import { ErrorAlert } from "@components/ErrorAlert"
 
 import { MovieSearchResult } from "@schemas/MovieSearchResult"
 
-import { DownloadMovieError } from "@typings/DownloadMovieError"
+import "@typings/DownloadMovieError"
+
+import { DownloadMovieErrorType } from "@typings/DownloadMovieError"
 
 export const DownloadButton: FC<{
 	movie: MovieSearchResult
@@ -38,17 +40,23 @@ export const DownloadButton: FC<{
 		return <ErrorAlert error={error} what={"the download"} />
 	}
 
+	console.log(data)
+
 	if (data !== undefined) {
-		if (typeof data === "number") {
+		if ("error" in data) {
 			return (
 				<Alert
 					color="warning"
 					startDecorator={<SvgIcon component={MdWarning} />}
 				>
-					{data === DownloadMovieError.invalidSettings
+					{data.type === DownloadMovieErrorType.invalidSettings
 						? "Please check your settings"
-						: data === DownloadMovieError.rejectedOnly
-						? "Only found rejected releases"
+						: data.type === DownloadMovieErrorType.rejectedOnly
+						? data.releaseCount
+							? "Found " +
+							  data.releaseCount +
+							  " rejected releases, but no accepted ones."
+							: "No releases found"
 						: "Unknown Error"}
 				</Alert>
 			)

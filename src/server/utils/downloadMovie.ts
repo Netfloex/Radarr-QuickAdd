@@ -12,7 +12,12 @@ import { getReleases } from "@api/getReleases"
 import type { DownloadMovieBody } from "@schemas/DownloadMovieBody"
 import type { Release } from "@schemas/Release"
 
-import { DownloadMovieError } from "@typings/DownloadMovieError"
+import "@typings/DownloadMovieError"
+
+import {
+	DownloadMovieError,
+	DownloadMovieErrorType,
+} from "@typings/DownloadMovieError"
 
 export const downloadMovie = async (
 	movie: DownloadMovieBody,
@@ -20,7 +25,10 @@ export const downloadMovie = async (
 	const settings = await getSettings()
 
 	if (settings instanceof ZodError) {
-		return DownloadMovieError.invalidSettings
+		return {
+			type: DownloadMovieErrorType.invalidSettings,
+			error: true,
+		}
 	}
 
 	let movieId = "id" in movie ? movie.id : false
@@ -60,16 +68,21 @@ export const downloadMovie = async (
 
 	console.log(chk`Searching releases for {dim ${movie.title}} ...`)
 	const releases = await getReleases(movieId)
+	console.log(chk`Found ${releases.length} releases for {dim ${movie.title}}`)
 
-	const unRejected = releases.filter((release) => !release.rejected)
+	const accepted = releases.filter((release) => !release.rejected)
 
-	if (!unRejected.length) {
+	if (!accepted.length) {
 		console.log(chk`Movie: {dim ${movie.title}} only has rejected releases`)
 
-		return DownloadMovieError.rejectedOnly
+		return {
+			type: DownloadMovieErrorType.rejectedOnly,
+			releaseCount: releases.length,
+			error: true,
+		}
 	}
 
-	const best = unRejected.reduce((prev, cur) =>
+	const best = accepted.reduce((prev, cur) =>
 		prev.seeders > cur.seeders ? prev : cur,
 	)
 
