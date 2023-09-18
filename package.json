@@ -1,5 +1,5 @@
 {
-	"name": "quickadd",
+	"name": "radarr-quickadd",
 	"version": "0.1.0",
 	"description": "Easily download movies from radarr",
 	"main": ".next/standalone/server",

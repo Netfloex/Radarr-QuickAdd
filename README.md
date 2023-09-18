@@ -17,7 +17,7 @@ This program makes downloading movies from Radarr a lot easier. You can search f
 version: "3"
 services:
     quickadd:
-        image: netfloex/quickadd
+        image: netfloex/radarr-quickadd
         container_name: quickadd
         environment:
             SERVER_URL: http://radarr # As accessible by this container
