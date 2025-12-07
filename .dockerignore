@@ -1,6 +1,6 @@
 **
 
-!/next.config.js
+!/next.config.ts
 !/package.json
 !/src/**
 !/tsconfig.json

@@ -1,13 +1,17 @@
 import { Dashboard } from "./Dashboard"
 
 import type { Metadata } from "next"
-import type { FC } from "react"
+import { Suspense, type FC } from "react"
 
 export const metadata: Metadata = {
 	title: "Radarr Quickadd",
 	description: "Quickly download movies via Radarr",
 }
 
-const Page: FC = () => <Dashboard />
+const Page: FC = () => (
+	<Suspense fallback={<h1>Loading...</h1>}>
+		<Dashboard />
+	</Suspense>
+)
 
 export default Page

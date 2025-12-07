@@ -10,7 +10,8 @@
 		"dev": "next dev --turbo",
 		"start": "next start",
 		"lint": "eslint .",
-		"postinstall": "husky install"
+		"postinstall": "husky install",
+		"prepare": "husky"
 	},
 	"keywords": [],
 	"author": "",
