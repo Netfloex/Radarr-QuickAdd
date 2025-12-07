@@ -67,7 +67,9 @@ export const downloadMovie = async (
 	}
 
 	console.log(chk`Searching releases for {dim ${movie.title}} ...`)
+
 	const releases = await getReleases(movieId)
+
 	console.log(chk`Found ${releases.length} releases for {dim ${movie.title}}`)
 
 	const accepted = releases.filter((release) => !release.rejected)

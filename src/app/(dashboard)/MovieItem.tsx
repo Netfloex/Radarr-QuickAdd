@@ -33,18 +33,18 @@ export const MovieItem: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 
 	const queueItem: FoundQueueItem = !("id" in movie)
 		? false
-		: data?.find((item) => item.movieId == movie.id) ?? false
+		: (data?.find((item) => item.movieId == movie.id) ?? false)
 
 	return (
-		<Card orientation="horizontal" className={styles.movieItem}>
+		<Card className={styles.movieItem} orientation="horizontal">
 			<CardOverflow className={styles.overflow}>
-				<AspectRatio ratio={2 / 3} className={styles.poster}>
+				<AspectRatio className={styles.poster} ratio={2 / 3}>
 					{movie.remotePoster && (
 						<Image
+							alt={movie.title}
+							fill={true}
 							src={movie.remotePoster}
 							unoptimized
-							fill={true}
-							alt={movie.title}
 						/>
 					)}
 					<MovieStatus movie={movie} queueItem={queueItem} />
@@ -52,10 +52,10 @@ export const MovieItem: FC<{ movie: MovieSearchResult }> = ({ movie }) => {
 			</CardOverflow>
 			<CardContent sx={{ px: 2, justifyContent: "space-between" }}>
 				<Typography>
-					<Typography level="h2" display="block">
+					<Typography display="block" level="h2">
 						{movie.title} ({movie.year})
 					</Typography>
-					<Typography level="body4" display="block">
+					<Typography display="block" level="body-md">
 						{Duration.fromObject({ minutes: movie.runtime })
 							.shiftTo("hours", "minutes")
 							.toHuman()}

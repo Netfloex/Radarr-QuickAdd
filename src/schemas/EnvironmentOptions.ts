@@ -3,10 +3,10 @@ import { z } from "zod"
 
 export const EnvironmentOptions = z.object({
 	serverUrl: z
-		.string({ required_error: "SERVER_URL is required" })
+		.string({ error: "SERVER_URL is required" })
 		.url("SERVER_URL is not a valid Url"),
 	apiKey: z
-		.string({ required_error: "API_KEY is required" })
+		.string({ error: "API_KEY is required" })
 		.length(32, "API_KEY must be 32 characters"),
 	storePath: z
 		.string()

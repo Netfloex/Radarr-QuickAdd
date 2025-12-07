@@ -17,6 +17,7 @@ export const TrpcProvider: FCC = ({ children }) => {
 						refetchOnWindowFocus: false,
 						retry(failureCount, error): boolean {
 							if (failureCount > 2) return false
+
 							return !(
 								error instanceof TRPCClientError && error.data
 							)

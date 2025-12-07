@@ -9,8 +9,6 @@ export const metadata: Metadata = {
 	description: "Quickly download movies via Radarr",
 }
 
-const Page: FC = () => {
-	return <Settings />
-}
+const Page: FC = () => <Settings />
 
 export default Page

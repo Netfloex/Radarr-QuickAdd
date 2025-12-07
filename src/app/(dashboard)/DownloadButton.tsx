@@ -19,7 +19,7 @@ import { DownloadMovieErrorType } from "@typings/DownloadMovieError"
 export const DownloadButton: FC<{
 	movie: MovieSearchResult
 }> = ({ movie }) => {
-	const { mutate, isError, data, error, isLoading } =
+	const { mutate, isError, data, error, isPending } =
 		trpc.downloadMovie.useMutation()
 
 	const download = useCallback(() => {
@@ -37,7 +37,7 @@ export const DownloadButton: FC<{
 	}, [movie, mutate])
 
 	if (isError) {
-		return <ErrorAlert error={error} what={"the download"} />
+		return <ErrorAlert error={error} what="the download" />
 	}
 
 	console.log(data)
@@ -52,28 +52,28 @@ export const DownloadButton: FC<{
 					{data.type === DownloadMovieErrorType.invalidSettings
 						? "Please check your settings"
 						: data.type === DownloadMovieErrorType.rejectedOnly
-						? data.releaseCount
-							? "Found " +
-							  data.releaseCount +
-							  " rejected releases, but no accepted ones."
-							: "No releases found"
-						: "Unknown Error"}
+							? data.releaseCount
+								? "Found " +
+									data.releaseCount +
+									" rejected releases, but no accepted ones."
+								: "No releases found"
+							: "Unknown Error"}
 				</Alert>
 			)
 		} else {
 			return (
 				<Alert
 					color="success"
-					startDecorator={<SvgIcon component={MdCheck} />}
+					startDecorator={<SvgIcon component={MdCheck({})} />}
 				>
 					<>
 						{data.title}
 						<Chip>{data.quality.quality.name}</Chip>
-						<> </>
-						<Chip color="info">
+
+						<Chip color="primary">
 							<>{filesize(data.size)}</>
 						</Chip>
-						<> </>
+
 						<Chip color="neutral">{data.seeders}</Chip>
 					</>
 				</Alert>
@@ -82,16 +82,14 @@ export const DownloadButton: FC<{
 	}
 
 	return (
-		<>
-			<Button
-				disabled={movie.hasFile || data !== undefined}
-				onClick={download}
-				loading={isLoading}
-				color={data !== undefined ? "success" : undefined}
-				className={styles.downloadButton}
-			>
-				Download
-			</Button>
-		</>
+		<Button
+			className={styles.downloadButton}
+			color={data !== undefined ? "success" : undefined}
+			disabled={movie.hasFile || data !== undefined}
+			loading={isPending}
+			onClick={download}
+		>
+			Download
+		</Button>
 	)
 }

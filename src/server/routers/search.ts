@@ -6,6 +6,4 @@ import { search } from "@api/search"
 
 export const searchRoute = procedure
 	.input(z.object({ query: z.string().nonempty() }))
-	.query(async ({ input: { query } }) => {
-		return await search(query)
-	})
+	.query(async ({ input: { query } }) => await search(query))

@@ -5,6 +5,4 @@ import { DownloadMovieBody } from "@schemas/DownloadMovieBody"
 
 export const downloadMovieRoute = procedure
 	.input(DownloadMovieBody)
-	.mutation(async ({ input }) => {
-		return await downloadMovie(input)
-	})
+	.mutation(async ({ input }) => await downloadMovie(input))

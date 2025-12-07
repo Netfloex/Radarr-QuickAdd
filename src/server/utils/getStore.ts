@@ -17,5 +17,6 @@ export const getStore = async (): Promise<StoreType> => {
 	await store.init()
 
 	savedStore = store
+
 	return store
 }

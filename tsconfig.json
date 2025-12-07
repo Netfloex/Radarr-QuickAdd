@@ -20,18 +20,24 @@
 		"noEmit": true,
 		"incremental": true,
 		"esModuleInterop": true,
-		"module": "esnext",
-		"moduleResolution": "node",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"tsBuildInfoFile": ".next/.tsbuildinfo",
-		"jsx": "preserve",
+		"jsx": "react-jsx",
 		"plugins": [
 			{
 				"name": "next"
 			}
 		]
 	},
-	"include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+	"include": [
+		"next-env.d.ts",
+		".next/types/**/*.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".next/dev/types/**/*.ts"
+	],
 	"exclude": ["node_modules"]
 }

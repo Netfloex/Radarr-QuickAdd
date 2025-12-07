@@ -15,6 +15,7 @@ export const settingsRouter = router({
 	}),
 	get: procedure.query(async () => {
 		const store = await getStore()
+
 		await store.read()
 
 		return store.data

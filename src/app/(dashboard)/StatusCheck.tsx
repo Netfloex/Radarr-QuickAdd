@@ -10,11 +10,11 @@ import { ErrorAlert } from "@components/ErrorAlert"
 import { HealthCheckErrorType } from "@typings/HealthCheckErrors"
 
 export const StatusCheck: FC = () => {
-	const { data, error, isLoading } = trpc.healthcheck.useQuery()
+	const { data, error, isPending } = trpc.healthcheck.useQuery()
 
-	if (isLoading) {
+	if (isPending) {
 		return (
-			<Alert variant="solid" startDecorator={<CircularProgress />}>
+			<Alert startDecorator={<CircularProgress />} variant="solid">
 				Checking API
 			</Alert>
 		)
@@ -22,6 +22,7 @@ export const StatusCheck: FC = () => {
 
 	if (error) {
 		console.error(error)
+
 		return <ErrorAlert error={error} what="healthcheck" />
 	}
 
@@ -30,37 +31,28 @@ export const StatusCheck: FC = () => {
 	}
 
 	return (
-		<>
-			<Alert
-				startDecorator={<SvgIcon component={MdError} />}
-				color="danger"
-			>
-				<Typography>
-					<Typography display="block">
-						{data.type === HealthCheckErrorType.requestError
-							? "Could not contact SERVER_URL"
-							: data.message}
-					</Typography>
-					{"zodError" in data &&
-						data.formatted.map((error) => (
-							<Typography
-								key={error}
-								level="body2"
-								display="block"
-							>
-								{error}
-							</Typography>
-						))}
-					{data.type === HealthCheckErrorType.responseError && (
-						<Typography level="body2">
-							<pre>{data.body}</pre>
-						</Typography>
-					)}
-					{data.type === HealthCheckErrorType.requestError && (
-						<Typography level="body2">{data.message}</Typography>
-					)}
+		<Alert color="danger" startDecorator={<SvgIcon component={MdError} />}>
+			<Typography>
+				<Typography display="block">
+					{data.type === HealthCheckErrorType.requestError
+						? "Could not contact SERVER_URL"
+						: data.message}
 				</Typography>
-			</Alert>
-		</>
+				{"zodError" in data &&
+					data.formatted.map((error) => (
+						<Typography display="block" key={error} level="body-md">
+							{error}
+						</Typography>
+					))}
+				{data.type === HealthCheckErrorType.responseError && (
+					<Typography level="body-md">
+						<pre>{data.body as string}</pre>
+					</Typography>
+				)}
+				{data.type === HealthCheckErrorType.requestError && (
+					<Typography level="body-md">{data.message}</Typography>
+				)}
+			</Typography>
+		</Alert>
 	)
 }

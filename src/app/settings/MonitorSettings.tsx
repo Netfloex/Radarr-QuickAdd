@@ -7,8 +7,7 @@ import type { Dispatch, FC, SetStateAction } from "react"
 export const MonitorSetting: FC<{
 	settings: Partial<SettingsInput>
 	setSettings: Dispatch<SetStateAction<Partial<SettingsInput>>>
-}> = ({ settings, setSettings }) => {
-	return (
+}> = ({ settings, setSettings }) => (
 		<FormControl
 			orientation="horizontal"
 			sx={{ justifyContent: "space-between" }}
@@ -30,4 +29,3 @@ export const MonitorSetting: FC<{
 			/>
 		</FormControl>
 	)
-}

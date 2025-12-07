@@ -78,6 +78,7 @@ const healthcheckResolver = async (): Promise<
 		}
 
 		console.error(error)
+
 		return {
 			type: HealthCheckErrorType.unknownError,
 			message: String(error),

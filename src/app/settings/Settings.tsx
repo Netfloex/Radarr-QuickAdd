@@ -28,7 +28,7 @@ export const useSaveSettings = () => {
 		false,
 	)
 
-	const { mutateAsync, isError, isLoading, error } =
+	const { mutateAsync, isError, isPending, error } =
 		trpc.settings.save.useMutation()
 
 	const saveSettings = useCallback(() => {
@@ -45,12 +45,8 @@ export const useSaveSettings = () => {
 
 	// Fetch saved settings
 	useEffect(() => {
-		const ac = new AbortController()
-
 		trpcUtils.settings.get
-			.fetch(undefined, {
-				signal: ac.signal,
-			})
+			.fetch(undefined)
 			.then((savedSettings) => {
 				setSettings(savedSettings)
 				setSavedSettings(savedSettings)
@@ -58,14 +54,10 @@ export const useSaveSettings = () => {
 			.catch((error) => {
 				console.error(error)
 			})
-
-		return (): void => {
-			ac.abort()
-		}
 	}, [setSavedSettings, trpcUtils])
 
 	return {
-		isSaving: isLoading,
+		isSaving: isPending,
 		savedSuccess,
 		saveError: error,
 		saveSettings,
@@ -87,25 +79,25 @@ export const Settings: FC = () => {
 	return (
 		<div className={`container ${styles.settings}`}>
 			<Card className={styles.card}>
-				<Typography level="h2" fontSize="md">
+				<Typography fontSize="md" level="h2">
 					Settings
 				</Typography>
 				<RootFolderSetting
-					settings={settings}
 					setSettings={setSettings}
+					settings={settings}
 				/>
 				<QualityProfileSetting
-					settings={settings}
 					setSettings={setSettings}
+					settings={settings}
 				/>
-				<MonitorSetting settings={settings} setSettings={setSettings} />
+				<MonitorSetting setSettings={setSettings} settings={settings} />
 				<Button
+					color={savedSuccess ? "success" : undefined}
 					disabled={
 						settings.qualityProfileId === undefined ||
 						settings.rootFolder === undefined ||
 						savedSuccess
 					}
-					color={savedSuccess ? "success" : undefined}
 					loading={isSaving}
 					onClick={saveSettings}
 				>

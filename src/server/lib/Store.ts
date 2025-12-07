@@ -31,6 +31,7 @@ export class Store<Schema> {
 
 	public async read(): Promise<void> {
 		const data: Schema = await readJson(this.path, { throws: false })
+
 		this.data = data ?? this.defaults
 	}
 }

@@ -22,6 +22,7 @@ export const Dashboard: FC = () => {
 
 	const onSearchChange = useCallback((value: string) => {
 		const newUrl = !value ? location.href.split("?")[0] : `?query=${value}`
+
 		history.pushState({ ...history.state, as: newUrl, newUrl }, "", newUrl)
 		setQuery(value)
 	}, [])
@@ -32,9 +33,9 @@ export const Dashboard: FC = () => {
 		<div className="container">
 			<div className={styles.topBar}>
 				<SearchField
+					className={styles.searchBar}
 					defaultValue={queryParam}
 					onChange={onSearchChangeDebounced}
-					className={styles.searchBar}
 				/>
 				<SettingsButton />
 			</div>

@@ -11,7 +11,7 @@ import { MovieItem } from "./MovieItem"
 import type { FC } from "react"
 
 export const Results: FC<{ query: string }> = ({ query }) => {
-	const { data, error, isInitialLoading, isLoading } = trpc.search.useQuery(
+	const { data, error, isFetching, isPending } = trpc.search.useQuery(
 		{ query },
 		{ enabled: query.length !== 0 },
 	)
@@ -20,15 +20,15 @@ export const Results: FC<{ query: string }> = ({ query }) => {
 	if (error) return <ErrorAlert error={error} what="results" />
 
 	// Loading
-	if (isInitialLoading)
+	if (isFetching)
 		return (
 			<div className={styles.loading}>
-				<CircularProgress variant="soft" color="neutral" />
+				<CircularProgress color="neutral" variant="soft" />
 			</div>
 		)
 
 	// Not started
-	if (isLoading) return null
+	if (isPending) return null
 
 	// No data
 	if (!data.length) return <>No Items</>
@@ -37,7 +37,7 @@ export const Results: FC<{ query: string }> = ({ query }) => {
 	return (
 		<List sx={{ paddingY: 0 }}>
 			{data.map((movie) => (
-				<ListItem sx={{ paddingX: 0 }} key={movie.tmdbId}>
+				<ListItem key={movie.tmdbId} sx={{ paddingX: 0 }}>
 					<MovieItem movie={movie} />
 				</ListItem>
 			))}

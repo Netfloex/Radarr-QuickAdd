@@ -7,14 +7,13 @@ export const SelectSetting: FCC<{
 	isLoading: boolean
 	value: unknown
 	onChange: (value: unknown) => void
-}> = ({ title, isLoading, value, onChange, children }) => {
-	return (
+}> = ({ title, isLoading, value, onChange, children }) => (
 		<FormControl>
 			<FormLabel>{title}</FormLabel>
 			<Select
+				onChange={(e, value): void => onChange(value)}
 				placeholder={isLoading ? "Loading..." : title}
 				value={value}
-				onChange={(e, value): void => onChange(value)}
 			>
 				{isLoading ? (
 					<CircularProgress sx={{ alignSelf: "center" }} />
@@ -24,4 +23,3 @@ export const SelectSetting: FCC<{
 			</Select>
 		</FormControl>
 	)
-}

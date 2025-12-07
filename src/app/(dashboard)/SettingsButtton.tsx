@@ -5,16 +5,14 @@ import { IconButton, SvgIcon } from "@mui/joy"
 
 import type { FC } from "react"
 
-export const SettingsButton: FC = () => {
-	return (
+export const SettingsButton: FC = () => (
 		<Link href="/settings">
 			<IconButton
-				variant="solid"
-				sx={{ bgcolor: "background.surface" }}
 				color="neutral"
+				sx={{ bgcolor: "background.surface" }}
+				variant="solid"
 			>
 				<SvgIcon component={MdSettings} />
 			</IconButton>
 		</Link>
 	)
-}

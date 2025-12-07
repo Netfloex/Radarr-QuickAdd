@@ -21,14 +21,14 @@ export const QualityProfileSetting: FC<{
 	return (
 		<SelectSetting
 			isLoading={isLoading}
-			title="Quality Profile"
-			value={settings.qualityProfileId}
 			onChange={(value): void =>
 				setSettings((settings) => ({
 					...settings,
 					qualityProfileId: value as number,
 				}))
 			}
+			title="Quality Profile"
+			value={settings.qualityProfileId}
 		>
 			{data?.map((profile) => (
 				<Option key={profile.id} value={profile.id}>

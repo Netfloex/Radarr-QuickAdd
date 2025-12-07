@@ -21,14 +21,14 @@ export const RootFolderSetting: FC<{
 	return (
 		<SelectSetting
 			isLoading={isLoading}
-			title="Root Folder"
-			value={settings.rootFolder}
 			onChange={(value): void =>
 				setSettings((settings) => ({
 					...settings,
 					rootFolder: value as string,
 				}))
 			}
+			title="Root Folder"
+			value={settings.rootFolder}
 		>
 			{data?.map((folder) => (
 				<Option key={folder.id} value={folder.path}>

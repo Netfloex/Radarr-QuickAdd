@@ -6,16 +6,14 @@ export const SearchField: FC<{
 	defaultValue: string
 	onChange: (value: string) => void
 	className?: string
-}> = ({ defaultValue, onChange, className }) => {
-	return (
+}> = ({ defaultValue, onChange, className }) => (
 		<div className={className}>
 			<Input
-				type="text"
 				autoFocus
-				placeholder="Enter a movie"
-				onChange={(ev): void => onChange(ev.target.value)}
 				defaultValue={defaultValue}
+				onChange={(ev): void => onChange(ev.target.value)}
+				placeholder="Enter a movie"
+				type="text"
 			/>
 		</div>
 	)
-}

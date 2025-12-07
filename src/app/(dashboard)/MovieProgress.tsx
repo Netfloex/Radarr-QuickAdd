@@ -17,11 +17,13 @@ export const MovieProgress: FC<{ queueStatus: QueueDetails }> = ({
 			{percentage.toFixed(1)}%
 			<Divider orientation="vertical" />
 			<LinearProgress
-				determinate
-				color={queueStatus.status !== "downloading" ? "danger" : "info"}
-				variant="soft"
-				value={percentage}
 				className={styles.progress}
+				color={
+					queueStatus.status !== "downloading" ? "danger" : "primary"
+				}
+				determinate
+				value={percentage}
+				variant="soft"
 			/>
 		</Box>
 	)
