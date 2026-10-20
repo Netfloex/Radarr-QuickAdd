@@ -1,9 +1,7 @@
 import "@styles/global.scss"
 
-import { InitColorSchemeScript } from "@components/InitColorSchemeScript"
 import { TrpcProvider } from "@components/TrpcProvider"
 import { CssBaseline, CssVarsProvider } from "@components/joy"
-
 import type { FCC } from "@typings/FCC"
 
 const RootLayout: FCC = ({ children }) => (
@@ -16,7 +14,6 @@ const RootLayout: FCC = ({ children }) => (
 		<body>
 			<TrpcProvider>
 				<CssVarsProvider defaultMode="system">
-					<InitColorSchemeScript />
 					<CssBaseline />
 					{children}
 				</CssVarsProvider>

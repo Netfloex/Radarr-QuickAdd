@@ -4,7 +4,7 @@ import styles from "./Dashboard.module.scss"
 
 import { useSearchParams } from "next/navigation"
 import { useCallback, useState } from "react"
-import { SettingsButton } from "src/app/(dashboard)/SettingsButtton"
+import { SettingsButton } from "./SettingsButtton"
 import { useDebouncedCallback } from "use-debounce"
 
 import { Results } from "./Results"

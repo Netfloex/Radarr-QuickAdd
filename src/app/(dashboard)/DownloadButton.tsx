@@ -64,7 +64,7 @@ export const DownloadButton: FC<{
 			return (
 				<Alert
 					color="success"
-					startDecorator={<SvgIcon component={MdCheck({})} />}
+					startDecorator={<SvgIcon component={MdCheck} />}
 				>
 					<>
 						{data.title}

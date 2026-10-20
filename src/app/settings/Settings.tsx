@@ -4,7 +4,7 @@ import styles from "./Settings.module.scss"
 
 import equal from "fast-deep-equal"
 import { FC, useCallback, useEffect, useState } from "react"
-import { MonitorSetting } from "src/app/settings/MonitorSettings"
+import { MonitorSetting } from "./MonitorSettings"
 
 import { Button, Card, Typography } from "@mui/joy"
 

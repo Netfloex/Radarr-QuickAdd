@@ -2,7 +2,7 @@ import styles from "./MovieItem.module.scss"
 
 import { Duration } from "luxon"
 import Image from "next/image"
-import { MovieProgress } from "src/app/(dashboard)/MovieProgress"
+import { MovieProgress } from "./MovieProgress"
 
 import {
 	AspectRatio,

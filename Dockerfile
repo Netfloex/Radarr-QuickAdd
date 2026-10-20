@@ -23,6 +23,7 @@ FROM $NODE_IMAGE AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV HOSTNAME="0.0.0.0"
 ENV STORE_PATH=/data/store.json
 ENV FORCE_COLOR=1
 
